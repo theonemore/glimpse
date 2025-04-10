@@ -1,0 +1,76 @@
+<?php
+
+use Fw2\Mentalist\Builder\Context;
+use Fw2\Mentalist\Builder\DocBlockHelper;
+use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\String_;
+
+function createHelper(): DocBlockHelper
+{
+    return new DocBlockHelper(DocBlockFactory::createInstance());
+}
+
+it('returns null when comment is null', function () {
+    $helper = createHelper();
+
+    $doc = $helper->create(null, new Context());
+
+    expect($doc)->toBeNull();
+});
+
+it('parses valid docblock', function () {
+    $helper = createHelper();
+    $doc = $helper->create(
+        <<<PHP
+        /**
+         * Summary line.
+         *
+         * Description text here.
+         *
+         * @param string \$name
+         * @param int \$age
+         * @return object
+         * @var string Description of var
+         */
+        PHP,
+        new Context()
+    );
+
+    expect($doc)->not->toBeNull();
+
+    expect($helper->getSummary($doc))->toBe('Summary line.');
+    expect($helper->getDescription($doc))->toContain('Description text here.');
+
+    $paramTypes = $helper->getParamTypes($doc);
+    expect($paramTypes)->toHaveKeys(['name', 'age']);
+    expect($paramTypes['name'])->toBeInstanceOf(String_::class);
+    expect($paramTypes['age'])->toBeInstanceOf(Integer::class);
+
+    $returnType = $helper->getReturnType($doc);
+    expect($returnType)->toBeInstanceOf(Object_::class);
+
+    $varType = $helper->getVarType($doc);
+    expect($varType)->toBeInstanceOf(String_::class);
+
+    $varDescription = $helper->getVarDescription($doc);
+    expect($varDescription)->toBeInstanceOf(Description::class)
+        ->and($varDescription->__toString())->toContain('Description of var');
+});
+
+it('returns empty results when no tags exist', function () {
+    $helper = createHelper();
+    $doc = $helper->create(
+        <<<PHP
+        /** Just a comment without tags. */
+        PHP,
+        new Context()
+    );
+
+    expect($helper->getParamTypes($doc))->toBe([])
+        ->and($helper->getReturnType($doc))->toBeNull()
+        ->and($helper->getVarType($doc))->toBeNull()
+        ->and($helper->getVarDescription($doc))->toBeNull();
+});

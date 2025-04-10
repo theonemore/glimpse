@@ -1,0 +1,28 @@
+{
+  "name": "fw2/mentalist",
+  "autoload": {
+    "psr-4": {
+      "Fw2\\Mentalist\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Roman Sokharev",
+      "email": "r.sokharev@team.superjob.ru"
+    }
+  ],
+  "require": {
+    "nikic/php-parser": "^5.4"
+  },
+  "require-dev": {
+    "pestphp/pest": "^3.7",
+    "symfony/var-dumper": "^7.2",
+    "mockery/mockery": "^1.6",
+    "phpstan/phpstan": "^2.1"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
+}

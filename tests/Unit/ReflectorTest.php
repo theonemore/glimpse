@@ -1,0 +1,90 @@
+<?php
+
+use Fw2\Mentalist\Ast\AstResolver;
+use Fw2\Mentalist\Builder\ClassBuilder;
+use Fw2\Mentalist\Builder\Context;
+use Fw2\Mentalist\Builder\ObjectPromise;
+use Fw2\Mentalist\Providers\ClassBuilderProvider;
+use Fw2\Mentalist\Reflector;
+use Fw2\Mentalist\Types\ObjectType;
+use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\Namespace_;
+
+beforeEach(function () {
+    $this->fqcn = 'App\\Example\\MyClass';
+
+    $this->mockResolver = mock(AstResolver::class);
+    $this->mockBuilder = mock(ClassBuilder::class);
+    $this->mockClassBuilderProvider = mock(ClassBuilderProvider::class);
+    $this->mockClassBuilderProvider
+        ->shouldReceive('get')
+        ->andReturn($this->mockBuilder);
+
+    $this->reflector = new Reflector($this->mockResolver, $this->mockClassBuilderProvider);
+});
+
+it('returns ObjectPromise when ref is true', function () {
+    $promise = $this->reflector->reflect($this->fqcn, true);
+
+    expect($promise)->toBeInstanceOf(ObjectPromise::class)
+        ->and($promise->getFqcn())->toBe($this->fqcn);
+});
+
+it('builds and caches ObjectType from class AST', function () {
+    $classNode = new Class_('MyClass');
+    $classNode->namespacedName = new Name($classNode->name->name);
+
+    $objectType = mock(ObjectType::class);
+    $objectType->shouldReceive('getFqcn')->andReturn($this->fqcn);
+
+    $this->mockResolver
+        ->shouldReceive('resolve')
+        ->with($this->fqcn)
+        ->andReturn([$classNode]);
+
+    $this->mockBuilder
+        ->shouldReceive('build')
+        ->with($classNode, \Mockery::type(Context::class))
+        ->andReturn($objectType);
+
+    $result = $this->reflector->reflect($this->fqcn);
+
+    expect($result)->toBe($objectType);
+
+    // второй вызов должен использовать кеш
+    $cached = $this->reflector->reflect($this->fqcn);
+    expect($cached)->toBe($result);
+});
+
+it('builds from Namespace_ statement', function () {
+    $classNode = new Class_('MyClass');
+    $namespaceNode = new Namespace_(new PhpParser\Node\Name('App\\Example'), [$classNode]);
+    $objectType = mock(ObjectType::class);
+    $objectType->shouldReceive('getFqcn')->andReturn($this->fqcn);
+
+    $this->mockResolver
+        ->shouldReceive('resolve')
+        ->with($this->fqcn)
+        ->andReturn([$namespaceNode]);
+
+    $this->mockBuilder
+        ->shouldReceive('build')
+        ->andReturn($objectType);
+
+    $result = $this->reflector->reflect($this->fqcn);
+
+    expect($result)->toBe($objectType);
+});
+
+it('throws RuntimeException on unknown node type', function () {
+    $this->mockResolver
+        ->shouldReceive('resolve')
+        ->with($this->fqcn)
+        ->andReturn([
+            new class {
+            }
+        ]); // неподдерживаемый тип
+
+    $this->reflector->reflect($this->fqcn);
+})->throws(RuntimeException::class);

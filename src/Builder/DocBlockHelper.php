@@ -1,0 +1,95 @@
+<?php
+
+namespace Fw2\Mentalist\Builder;
+
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use phpDocumentor\Reflection\Type as DocType;
+
+class DocBlockHelper
+{
+    public function __construct(
+        private DocBlockFactoryInterface $factory
+    ) {
+    }
+
+    public function create(?string $comment, Context $ctx): ?DocBlock
+    {
+        if (!$comment) {
+            return null;
+        }
+
+        try {
+            return $this->factory->create($comment, $ctx->toPhpDoc());
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    public function getSummary(?DocBlock $doc): ?string
+    {
+        return $doc?->getSummary() ?: null;
+    }
+
+    public function getDescription(?DocBlock $doc): ?string
+    {
+        return $doc?->getDescription()?->getBodyTemplate() ?: null;
+    }
+
+    /**
+     * @param DocBlock|null $doc
+     * @return array<string, DocType>
+     */
+    public function getParamTypes(?DocBlock $doc): array
+    {
+        if (!$doc) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($doc->getTagsByName('param') as $tag) {
+            if ($tag instanceof Param && $tag->getType()) {
+                $result[$tag->getVariableName()] = $tag->getType();
+            }
+        }
+
+        return $result;
+    }
+
+    public function getReturnType(?DocBlock $doc): ?DocType
+    {
+        foreach ($doc?->getTagsByName('return') ?? [] as $tag) {
+            if ($tag instanceof Return_) {
+                return $tag->getType();
+            }
+        }
+
+        return null;
+    }
+
+    public function getVarType(?DocBlock $doc): ?DocType
+    {
+        foreach ($doc?->getTagsByName('var') ?? [] as $tag) {
+            if ($tag instanceof Var_) {
+                return $tag->getType();
+            }
+        }
+
+        return null;
+    }
+
+    public function getVarDescription(?DocBlock $doc): ?Description
+    {
+        foreach ($doc?->getTagsByName('var') ?? [] as $tag) {
+            if ($tag instanceof Var_) {
+                return $tag->getDescription();
+            }
+        }
+
+        return null;
+    }
+}
