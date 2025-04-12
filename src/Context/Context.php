@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder\Context;
+namespace Fw2\Glimpse\Context;
 
 use phpDocumentor\Reflection\Types\Context as PhpDocContext;
 use PhpParser\Node\Name;
@@ -25,6 +25,7 @@ class Context
      */
     private array $cache = [];
     private ?PhpDocContext $phpDocContext = null;
+    private ?string $parent = null;
 
     public function __construct(?Namespace_ $namespace = null)
     {
@@ -49,15 +50,8 @@ class Context
      */
     public function for(string $static): static
     {
-        return (clone $this)->setStatic($this->fqcn($static));
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function uses(): array
-    {
-        return $this->uses;
+        return (clone $this)
+            ->setStatic($this->fqcn($static));
     }
 
     private function add(ContextName $name): void
@@ -168,5 +162,17 @@ class Context
         $this->static = $static;
 
         return $this;
+    }
+
+    public function setParent(string $name): static
+    {
+        $this->parent = $name;
+
+        return $this;
+    }
+
+    public function getParent(): ?string
+    {
+        return $this->parent;
     }
 }

@@ -13,7 +13,13 @@
     <exclude name="Squiz.Commenting.FunctionComment"/>
     <exclude name="Squiz.Commenting.ClassComment"/>
     <exclude name="Squiz.Commenting.FileComment"/>
-
     <file>src</file>
     <exclude-pattern>vendor/*</exclude-pattern>
+    <extensions>
+        <extension class="Pest\TypeCoverage\Plugin">
+            <arguments>
+                <minimum>100</minimum>
+            </arguments>
+        </extension>
+    </extensions>
 </ruleset>

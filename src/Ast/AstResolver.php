@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Ast;
+namespace Fw2\Glimpse\Ast;
 
-use Fw2\Mentalist\Providers\ParserProvider;
+use Fw2\Glimpse\Providers\ParserProvider;
 use PhpParser\Node\Stmt;
 use ReflectionClass;
 use ReflectionException;

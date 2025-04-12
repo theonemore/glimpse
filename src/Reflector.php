@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist;
+namespace Fw2\Glimpse;
 
-use Fw2\Mentalist\Ast\AstResolver;
-use Fw2\Mentalist\Builder\ClassBuilder;
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Builder\DocBlockHelper;
-use Fw2\Mentalist\Entity\PromiseObject;
-use Fw2\Mentalist\Providers\AttributeBuilderProvider;
-use Fw2\Mentalist\Providers\ClassBuilderProvider;
-use Fw2\Mentalist\Providers\EvaluatorProvider;
-use Fw2\Mentalist\Providers\MethodBuilderProvider;
-use Fw2\Mentalist\Providers\ParserProvider;
-use Fw2\Mentalist\Providers\PropertyBuilderProvider;
-use Fw2\Mentalist\Providers\TypeBuilderProvider;
-use Fw2\Mentalist\Types\ObjectType;
+use Fw2\Glimpse\Ast\AstResolver;
+use Fw2\Glimpse\Builder\ClassBuilder;
+use Fw2\Glimpse\Builder\DocBlockHelper;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\PromiseObject;
+use Fw2\Glimpse\Providers\AttributeBuilderProvider;
+use Fw2\Glimpse\Providers\ClassBuilderProvider;
+use Fw2\Glimpse\Providers\EvaluatorProvider;
+use Fw2\Glimpse\Providers\MethodBuilderProvider;
+use Fw2\Glimpse\Providers\ParserProvider;
+use Fw2\Glimpse\Providers\PropertyBuilderProvider;
+use Fw2\Glimpse\Providers\TypeBuilderProvider;
+use Fw2\Glimpse\Types\ObjectType;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\Namespace_;
@@ -79,9 +79,9 @@ class Reflector
     /**
      * @throws ReflectionException
      */
-    private function buildClass(ClassLike $classLike, Context $ctx = null): void
+    private function buildClass(ClassLike $classLike, Context $ctx): void
     {
-        $object = $this->classes->build($classLike, $ctx ?? new Context());
+        $object = $this->classes->build($classLike, $ctx);
         $this->built[$object->getFqcn()] = $object;
     }
 
@@ -92,7 +92,7 @@ class Reflector
     {
         match (true) {
             $stmt instanceof Namespace_ => $this->buildNamespace($stmt),
-            $stmt instanceof ClassLike => $this->buildClass($stmt),
+            $stmt instanceof ClassLike => $this->buildClass($stmt, (new Context())->for($stmt->name->name)),
             default => throw new \RuntimeException(),
         };
     }

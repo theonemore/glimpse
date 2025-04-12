@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder;
+namespace Fw2\Glimpse\Builder;
 
-use Fw2\Mentalist\Builder\Context\Context;
+use Fw2\Glimpse\Context\Context;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
@@ -33,7 +32,7 @@ class ScalarExpressionEvaluator
                 'true' => true,
                 'false' => false,
                 'null' => null,
-                default => throw new \LogicException("Unknown constant: " . $expr->name),
+                default => defined($expr->name->name) ? constant($expr->name->name) : null,
             },
             $expr instanceof Expr\BinaryOp\BitwiseAnd =>
                 $this->evaluate($expr->left, $context) & $this->evaluate($expr->right, $context),
@@ -90,7 +89,7 @@ class ScalarExpressionEvaluator
                 : $this->evaluate($expr->else, $context),
             $expr instanceof ClassConstFetch => $this->evalClassConst($expr, $context),
             $expr instanceof Array_ => $this->evalArray($expr, $context),
-            $expr instanceof ArrayDimFetch => $this->evalArrayDimFetch($expr, $context),
+            $expr instanceof Expr\ArrayDimFetch => $this->evalArrayDimFetch($expr, $context),
             $expr instanceof Expr\UnaryMinus => -$this->evaluate($expr->expr, $context),
             $expr instanceof Expr\UnaryPlus => +$this->evaluate($expr->expr, $context),
             $expr instanceof Expr\BooleanNot => !$this->evaluate($expr->expr, $context),
@@ -106,10 +105,12 @@ class ScalarExpressionEvaluator
             $expr instanceof Expr\Isset_ => $this->evalIsset($expr, $context),
             $expr instanceof Expr\Eval_ => $this->evalEval($expr, $context),
 
-            $expr instanceof Expr\NullsafePropertyFetch => throw new \LogicException(
-                'Доступ к свойствам объектов не поддерживается'
+            $expr instanceof Expr\PropertyFetch,
+                $expr instanceof Expr\NullsafePropertyFetch => throw new \LogicException(
+                'Property fetch is not supported'
             ),
-            $expr instanceof Expr\NullsafeMethodCall => throw new \LogicException('Method call is not supported'),
+            $expr instanceof Expr\MethodCall,
+                $expr instanceof Expr\NullsafeMethodCall => throw new \LogicException('Method call is not supported'),
             $expr instanceof Expr\Cast\Object_ => throw new \LogicException('(object) cast is not supported'),
 
             default => throw new \LogicException('Can not compute: ' . $expr::class),
@@ -117,8 +118,8 @@ class ScalarExpressionEvaluator
     }
 
     /**
-     * @param  Array_  $array
-     * @param  Context $context
+     * @param Array_ $array
+     * @param Context $context
      * @return array<int|string, mixed>
      */
     private function evalArray(Array_ $array, Context $context): array
@@ -140,17 +141,22 @@ class ScalarExpressionEvaluator
     {
         $className = $expr->class;
         $constName = $expr->name->name;
-
-        if ($className instanceof Node\Name) {
-            $raw = $className->toString();
-            $fqcn = match (strtolower($raw)) {
+        $fqcn = match (true) {
+            $className instanceof Node\Name => match (strtolower($className->name)) {
                 'static', 'self' => $context->getStatic()
                     ?? throw new \LogicException("static/self used without context"),
-                'parent' => throw new \LogicException("parent::CONST is not supported"),
-                default => $context->fqcn($raw),
-            };
-        } else {
-            throw new \LogicException('Fqcn should be Node\Name');
+                'parent' => $context->getParent(),
+                default => $context->fqcn($className->name),
+            },
+            $className instanceof Expr => $this->evaluate($className, $context),
+        };
+
+        if (!$fqcn) {
+            throw new \LogicException("Can not evaluate: ::$constName");
+        }
+
+        if (!is_string($fqcn)) {
+            throw new \LogicException("Unsupported fqcn expression result type: " . gettype($fqcn));
         }
 
         if (!class_exists($fqcn)) {

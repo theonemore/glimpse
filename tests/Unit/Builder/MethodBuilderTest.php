@@ -1,13 +1,13 @@
 <?php
 
-use Fw2\Mentalist\Builder\AttributeBuilder;
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Builder\DocBlockHelper;
-use Fw2\Mentalist\Builder\MethodBuilder;
-use Fw2\Mentalist\Builder\TypeBuilder;
-use Fw2\Mentalist\Entity\ObjectMethod;
-use Fw2\Mentalist\Types\IntType;
-use Fw2\Mentalist\Types\StringType;
+use Fw2\Glimpse\Builder\AttributeBuilder;
+use Fw2\Glimpse\Builder\DocBlockHelper;
+use Fw2\Glimpse\Builder\MethodBuilder;
+use Fw2\Glimpse\Builder\TypeBuilder;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\ObjectMethod;
+use Fw2\Glimpse\Types\IntType;
+use Fw2\Glimpse\Types\StringType;
 use phpDocumentor\Reflection\Types\String_;
 use PhpParser\Comment\Doc;
 use PhpParser\Node\AttributeGroup;
@@ -126,7 +126,7 @@ it('builds method with parameter attributes', function () {
 
     $this->attributeBuilder->shouldReceive('build')
         ->with($attrGroups, $this->ctx)
-        ->andReturn([new \Fw2\Mentalist\Entity\Attribute('TestAttribute', [])]);
+        ->andReturn([new \Fw2\Glimpse\Entity\Attribute('TestAttribute', [])]);
 
     $method = $this->builder->build($methodNode, $this->ctx);
 

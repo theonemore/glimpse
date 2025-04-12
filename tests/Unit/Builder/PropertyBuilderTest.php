@@ -1,16 +1,16 @@
 <?php
 
-use Fw2\Mentalist\Builder\AttributeBuilder;
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Builder\DocBlockHelper;
-use Fw2\Mentalist\Builder\PropertyBuilder;
-use Fw2\Mentalist\Builder\TypeBuilder;
-use Fw2\Mentalist\Entity\ObjectProperty;
-use Fw2\Mentalist\Types\BoolType;
-use Fw2\Mentalist\Types\FloatType;
-use Fw2\Mentalist\Types\IntType;
-use Fw2\Mentalist\Types\NullType;
-use Fw2\Mentalist\Types\StringType;
+use Fw2\Glimpse\Builder\AttributeBuilder;
+use Fw2\Glimpse\Builder\DocBlockHelper;
+use Fw2\Glimpse\Builder\PropertyBuilder;
+use Fw2\Glimpse\Builder\TypeBuilder;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\ObjectProperty;
+use Fw2\Glimpse\Types\BoolType;
+use Fw2\Glimpse\Types\FloatType;
+use Fw2\Glimpse\Types\IntType;
+use Fw2\Glimpse\Types\NullType;
+use Fw2\Glimpse\Types\StringType;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Types\String_;
 use PhpParser\Comment\Doc;
@@ -114,7 +114,7 @@ it('builds property with attributes', function () {
         ->with(Mockery::on(fn($arg) => $arg instanceof Identifier), $this->ctx)
         ->andReturn(new IntType());
 
-    $attributeResult = [new \Fw2\Mentalist\Entity\Attribute('TestAttribute', [])];
+    $attributeResult = [new \Fw2\Glimpse\Entity\Attribute('TestAttribute', [])];
     $this->attributeBuilder->shouldReceive('build')->with([$attrGroup], $this->ctx)->andReturn($attributeResult);
 
     $properties = $this->propertyBuilder->build($propertyNode, $this->ctx);

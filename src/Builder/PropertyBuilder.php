@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder;
+namespace Fw2\Glimpse\Builder;
 
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Entity\ObjectProperty;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\ObjectProperty;
 use PhpParser\Node\Stmt\Property;
 use ReflectionException;
 
-readonly class PropertyBuilder
+class PropertyBuilder
 {
     public function __construct(
-        private TypeBuilder $tb,
-        private AttributeBuilder $ab,
-        private DocBlockHelper $docBlockHelper,
+        readonly private TypeBuilder $tb,
+        readonly private AttributeBuilder $ab,
+        readonly private DocBlockHelper $docBlockHelper,
     ) {
     }
 

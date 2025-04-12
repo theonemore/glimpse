@@ -1,20 +1,29 @@
 <?php
 
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Builder\TypeBuilder;
-use Fw2\Mentalist\Entity\PromiseObject;
-use Fw2\Mentalist\Reflector;
-use Fw2\Mentalist\Types\{NullType};
-use Fw2\Mentalist\Types\ArrayType;
-use Fw2\Mentalist\Types\BoolType;
-use Fw2\Mentalist\Types\FloatType;
-use Fw2\Mentalist\Types\IntType;
-use Fw2\Mentalist\Types\ObjectType;
-use Fw2\Mentalist\Types\Option;
-use Fw2\Mentalist\Types\StringType;
-use Fw2\Mentalist\Types\UnionType;
+use Fw2\Glimpse\Builder\TypeBuilder;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\PromiseObject;
+use Fw2\Glimpse\Reflector;
+use Fw2\Glimpse\Types\{NullType};
+use Fw2\Glimpse\Types\ArrayType;
+use Fw2\Glimpse\Types\BoolType;
+use Fw2\Glimpse\Types\FloatType;
+use Fw2\Glimpse\Types\IntType;
+use Fw2\Glimpse\Types\ObjectType;
+use Fw2\Glimpse\Types\Option;
+use Fw2\Glimpse\Types\StringType;
+use Fw2\Glimpse\Types\UnionType;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
-use phpDocumentor\Reflection\Types\{Array_, Boolean, Float_, Integer, Null_, Nullable, Self_, Static_, String_};
+use phpDocumentor\Reflection\Types\{Array_,
+    Boolean,
+    Float_,
+    Integer,
+    Null_,
+    Nullable,
+    Parent_,
+    Self_,
+    Static_,
+    String_};
 use phpDocumentor\Reflection\Types\AggregatedType;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
@@ -135,4 +144,28 @@ it('builds special Self_ type', function () {
     $result = $this->builder->build($unsupportedType, $this->ctx->for('TestClass'));
     expect($result)->toBeInstanceOf(PromiseObject::class)
         ->and($result->getFqcn())->toBe('TestClass');
+});
+
+
+it('calls reflector reflect with parent class when Parent_ type is encountered', function () {
+    $parentClass = 'SomeParentClass';
+
+    $ctx = mock(Context::class);
+
+    $ctx->shouldReceive('getParent')->andReturn($parentClass);
+
+    $reflector = mock(Reflector::class);
+
+    $builder = new TypeBuilder($reflector);
+
+    $parentReflection = mock(ObjectType::class);
+
+    $reflector->shouldReceive('reflect')->with($parentClass)->andReturn($parentReflection);
+
+    $parentType = new Parent_();
+
+    $result = $builder->build($parentType, $ctx);
+
+    expect($result)->toBe($parentReflection);
+    $reflector->shouldHaveReceived('reflect', [$parentClass]);
 });

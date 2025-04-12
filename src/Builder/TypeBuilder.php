@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder;
+namespace Fw2\Glimpse\Builder;
 
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Reflector;
-use Fw2\Mentalist\Types\AbstractObjectType;
-use Fw2\Mentalist\Types\ArrayType;
-use Fw2\Mentalist\Types\BoolType;
-use Fw2\Mentalist\Types\FloatType;
-use Fw2\Mentalist\Types\IntType;
-use Fw2\Mentalist\Types\NullType;
-use Fw2\Mentalist\Types\Option;
-use Fw2\Mentalist\Types\StringType;
-use Fw2\Mentalist\Types\Type;
-use Fw2\Mentalist\Types\UnionType;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Reflector;
+use Fw2\Glimpse\Types\AbstractObjectType;
+use Fw2\Glimpse\Types\ArrayType;
+use Fw2\Glimpse\Types\BoolType;
+use Fw2\Glimpse\Types\FloatType;
+use Fw2\Glimpse\Types\IntType;
+use Fw2\Glimpse\Types\NullType;
+use Fw2\Glimpse\Types\Option;
+use Fw2\Glimpse\Types\StringType;
+use Fw2\Glimpse\Types\Type;
+use Fw2\Glimpse\Types\UnionType;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
@@ -38,13 +38,13 @@ use phpDocumentor\Reflection\Types\Scalar;
 use phpDocumentor\Reflection\Types\Self_;
 use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
-use phpDocumentor\Reflection\Types\This as This_;
 use phpDocumentor\Reflection\Types\Void_;
 use PhpParser\Node;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use ReflectionException;
 use RuntimeException;
+use This as This_;
 
 class TypeBuilder
 {
@@ -129,7 +129,7 @@ class TypeBuilder
                 $type instanceof Static_,
                 $type instanceof This_ => $this->reflector->reflect($ctx->getStatic(), true),
 
-            $type instanceof Parent_ => $this->reflector->reflect(get_parent_class($ctx->getStatic())),
+            $type instanceof Parent_ => $this->reflector->reflect($ctx->getParent()),
 
             default => throw new RuntimeException(sprintf('Unsupported type: %s', get_class($type))),
         };

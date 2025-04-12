@@ -1,9 +1,9 @@
 <?php
 
-use Fw2\Mentalist\Builder\AttributeBuilder;
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Builder\ScalarExpressionEvaluator;
-use Fw2\Mentalist\Entity\Attribute as BuilderAttribute;
+use Fw2\Glimpse\Builder\AttributeBuilder;
+use Fw2\Glimpse\Builder\ScalarExpressionEvaluator;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\Attribute as BuilderAttribute;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Attribute as ParserAttribute;
 use PhpParser\Node\AttributeGroup;
@@ -17,7 +17,6 @@ beforeEach(function () {
     $this->builder = new AttributeBuilder($this->evaluator);
     $this->ctx = new Context();
 
-    // Мок контекста для преобразования имен
     $this->ctxMock = mock(Context::class);
     $this->ctxMock->shouldReceive('fqcn')->andReturnUsing(fn($name) => "Fully\\Qualified\\{$name}");
 });

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder\Aspect;
+namespace Fw2\Glimpse\Builder\Aspect;
 
-use Fw2\Mentalist\Entity\Attribute;
+use Fw2\Glimpse\Entity\Attribute;
 
 interface HasAttributeContract
 {

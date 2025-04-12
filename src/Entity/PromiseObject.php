@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Entity;
+namespace Fw2\Glimpse\Entity;
 
-use Fw2\Mentalist\Reflector;
-use Fw2\Mentalist\Types\ObjectType;
+use Fw2\Glimpse\Reflector;
+use Fw2\Glimpse\Types\ObjectType;
 
 class PromiseObject extends ObjectType
 {
@@ -22,14 +22,18 @@ class PromiseObject extends ObjectType
         return $this->reflector->reflect($this->getFqcn());
     }
 
-    public function addMethod(ObjectMethod $method): void
+    public function addMethod(ObjectMethod $method): static
     {
         $this->resolve()->addMethod($method);
+
+        return $this;
     }
 
-    public function addProperty(ObjectProperty $property): void
+    public function addProperty(ObjectProperty $property): static
     {
         $this->resolve()->addProperty($property);
+
+        return $this;
     }
 
     /**

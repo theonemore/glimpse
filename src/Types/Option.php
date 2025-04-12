@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Types;
+namespace Fw2\Glimpse\Types;
 
 class Option extends Type
 {

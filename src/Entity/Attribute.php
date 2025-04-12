@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Entity;
+namespace Fw2\Glimpse\Entity;
 
 readonly class Attribute
 {

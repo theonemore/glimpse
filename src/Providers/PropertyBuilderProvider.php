@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Providers;
+namespace Fw2\Glimpse\Providers;
 
-use Fw2\Mentalist\Builder\DocBlockHelper;
-use Fw2\Mentalist\Builder\PropertyBuilder;
-use Fw2\Mentalist\Reflector;
+use Fw2\Glimpse\Builder\DocBlockHelper;
+use Fw2\Glimpse\Builder\PropertyBuilder;
+use Fw2\Glimpse\Reflector;
 
 class PropertyBuilderProvider
 {

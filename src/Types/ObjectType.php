@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Types;
+namespace Fw2\Glimpse\Types;
 
-use Fw2\Mentalist\Builder\Aspect\HasAttributeContract;
-use Fw2\Mentalist\Builder\Aspect\HasAttributes;
-use Fw2\Mentalist\Entity\ObjectMethod;
-use Fw2\Mentalist\Entity\ObjectProperty;
+use Fw2\Glimpse\Builder\Aspect\HasAttributeContract;
+use Fw2\Glimpse\Builder\Aspect\HasAttributes;
+use Fw2\Glimpse\Entity\ObjectMethod;
+use Fw2\Glimpse\Entity\ObjectProperty;
 
 class ObjectType extends Type implements HasAttributeContract
 {
@@ -30,14 +30,18 @@ class ObjectType extends Type implements HasAttributeContract
         parent::__construct($description);
     }
 
-    public function addMethod(ObjectMethod $method): void
+    public function addMethod(ObjectMethod $method): static
     {
         $this->methods[$method->name] = $method;
+
+        return $this;
     }
 
-    public function addProperty(ObjectProperty $property): void
+    public function addProperty(ObjectProperty $property): static
     {
         $this->properties[$property->name] = $property;
+
+        return $this;
     }
 
     public function hasSameMethod(ObjectMethod $method): bool

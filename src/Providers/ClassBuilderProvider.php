@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Providers;
+namespace Fw2\Glimpse\Providers;
 
-use Fw2\Mentalist\Builder\ClassBuilder;
-use Fw2\Mentalist\Reflector;
+use Fw2\Glimpse\Builder\ClassBuilder;
+use Fw2\Glimpse\Reflector;
 
 class ClassBuilderProvider
 {

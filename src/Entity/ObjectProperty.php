@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Entity;
+namespace Fw2\Glimpse\Entity;
 
-use Fw2\Mentalist\Builder\Aspect\HasAttributeContract;
-use Fw2\Mentalist\Builder\Aspect\HasAttributes;
-use Fw2\Mentalist\Builder\Aspect\HasInfo;
-use Fw2\Mentalist\Types\Type;
+use Fw2\Glimpse\Builder\Aspect\HasAttributeContract;
+use Fw2\Glimpse\Builder\Aspect\HasAttributes;
+use Fw2\Glimpse\Builder\Aspect\HasInfo;
+use Fw2\Glimpse\Types\Type;
 
 class ObjectProperty implements HasAttributeContract
 {
@@ -23,5 +23,10 @@ class ObjectProperty implements HasAttributeContract
     public function clone(): static
     {
         return clone $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

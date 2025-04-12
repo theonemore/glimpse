@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder;
+namespace Fw2\Glimpse\Builder;
 
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Entity\ObjectMethod;
-use Fw2\Mentalist\Entity\Parameter;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\ObjectMethod;
+use Fw2\Glimpse\Entity\Parameter;
 use PhpParser\Node\Stmt\ClassMethod;
 use ReflectionException;
 
-readonly class MethodBuilder
+class MethodBuilder
 {
     public function __construct(
-        private TypeBuilder $types,
-        private AttributeBuilder $attributes,
-        private DocBlockHelper $docs,
+        readonly private TypeBuilder $types,
+        readonly private AttributeBuilder $attributes,
+        readonly private DocBlockHelper $docs,
     ) {
     }
 

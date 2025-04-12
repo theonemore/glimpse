@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder;
+namespace Fw2\Glimpse\Builder;
 
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Reflector;
-use Fw2\Mentalist\Types\ObjectType;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Reflector;
+use Fw2\Glimpse\Types\ObjectType;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\TraitUseAdaptation\Alias;
+use ReflectionException;
 
 class ClassBuilder
 {
@@ -25,10 +26,14 @@ class ClassBuilder
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function build(ClassLike $classLike, Context $ctx): ObjectType
     {
+        if ($classLike instanceof Class_ && $classLike->extends !== null) {
+            $ctx->setParent($ctx->fqcn($classLike->extends->name));
+        }
+
         $fqcn = $ctx->fqcn($classLike->name->name);
         $object = new ObjectType($fqcn);
 
@@ -40,8 +45,8 @@ class ClassBuilder
         // traits and adaptations
         foreach ($classLike->getTraitUses() as $use) {
             /**
- * @var array<string, array<string, Identifier>> $adaptations
-*/
+             * @var array<string, array<string, Identifier>> $adaptations
+             */
             $adaptations = [];
             foreach ($use->adaptations as $adaptation) {
                 if ($adaptation instanceof Alias) {
@@ -96,9 +101,9 @@ class ClassBuilder
 
 
     /**
-     * @param  ObjectType                $into
-     * @param  ObjectType                $from
-     * @param  array<string, Identifier> $adaptations
+     * @param ObjectType $into
+     * @param ObjectType $from
+     * @param array<string, Identifier> $adaptations
      * @return void
      */
     public function mergeFromTrait(ObjectType $into, ObjectType $from, array $adaptations = []): void
@@ -111,7 +116,8 @@ class ClassBuilder
 
         foreach ($from->getMethods() as $method) {
             if (!$into->hasSameMethod($method)) {
-                $name = $adaptations[$method->name] ?? $method->name;
+                $adaptation = $adaptations[$method->name] ?? null;
+                $name = $adaptation->name ?? $method->name;
                 $into->addMethod($method->withName($name));
             }
         }

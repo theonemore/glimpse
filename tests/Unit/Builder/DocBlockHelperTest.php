@@ -1,7 +1,7 @@
 <?php
 
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Builder\DocBlockHelper;
+use Fw2\Glimpse\Builder\DocBlockHelper;
+use Fw2\Glimpse\Context\Context;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Types\Integer;

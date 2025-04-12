@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder\Aspect;
+namespace Fw2\Glimpse\Builder\Aspect;
 
 interface HasDescriptionContract
 {

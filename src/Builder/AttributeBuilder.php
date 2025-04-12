@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder;
+namespace Fw2\Glimpse\Builder;
 
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Entity\Attribute;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\Attribute;
 use PhpParser\Node\Arg;
 use PhpParser\Node\AttributeGroup;
 

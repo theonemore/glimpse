@@ -1,12 +1,12 @@
 <?php
 
-use Fw2\Mentalist\Ast\AstResolver;
-use Fw2\Mentalist\Builder\ClassBuilder;
-use Fw2\Mentalist\Builder\Context\Context;
-use Fw2\Mentalist\Entity\PromiseObject;
-use Fw2\Mentalist\Providers\ClassBuilderProvider;
-use Fw2\Mentalist\Reflector;
-use Fw2\Mentalist\Types\ObjectType;
+use Fw2\Glimpse\Ast\AstResolver;
+use Fw2\Glimpse\Builder\ClassBuilder;
+use Fw2\Glimpse\Context\Context;
+use Fw2\Glimpse\Entity\PromiseObject;
+use Fw2\Glimpse\Providers\ClassBuilderProvider;
+use Fw2\Glimpse\Reflector;
+use Fw2\Glimpse\Types\ObjectType;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Namespace_;

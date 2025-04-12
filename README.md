@@ -1,5 +1,3 @@
-
-
 ## Contribution
 
 ### Running phpstan
@@ -9,11 +7,15 @@ $ vendor/bin/phpstan analyze src --level=6
 ```
 
 ### Running code-style
+
 *show violations*
+
 ```shell
 $ vendor/bin/phpcs
 ```
+
 *autofix if possible*
+
 ```shell
 $ vendor/bin/cbbf
 ```
@@ -22,5 +24,10 @@ $ vendor/bin/cbbf
 
 ```shell
 $ vendor/bin/pest
+```
+
+*coverage*
+```shell
+$ vendor/bin/pest --coverage
 ```
 

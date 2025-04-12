@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Mentalist\Builder\Context;
+namespace Fw2\Glimpse\Context;
 
 readonly class ContextName
 {
