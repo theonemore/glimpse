@@ -1,6 +1,8 @@
 <?php
 
-namespace Fw2\Mentalist\Builder;
+declare(strict_types=1);
+
+namespace Fw2\Mentalist\Builder\Context;
 
 readonly class ContextName
 {

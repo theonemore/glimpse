@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Builder;
 
+use Fw2\Mentalist\Builder\Context\Context;
+use Fw2\Mentalist\Entity\ObjectMethod;
+use Fw2\Mentalist\Entity\Parameter;
 use PhpParser\Node\Stmt\ClassMethod;
 use ReflectionException;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Types;
 
 use IteratorAggregate;
@@ -10,10 +12,12 @@ use Traversable;
  */
 class UnionType extends Type implements IteratorAggregate
 {
-    /** @var array<int, Type> */
+    /**
+     * @var array<int, Type>
+     */
     public readonly array $types;
 
-    public function __construct(Type...$types)
+    public function __construct(Type ...$types)
     {
         parent::__construct();
         $this->types = $types;

@@ -1,13 +1,15 @@
 <?php
 
-namespace Fw2\Mentalist\Builder;
+declare(strict_types=1);
+
+namespace Fw2\Mentalist\Entity;
 
 use Fw2\Mentalist\Builder\Aspect\HasAttributeContract;
 use Fw2\Mentalist\Builder\Aspect\HasAttributes;
 use Fw2\Mentalist\Builder\Aspect\HasInfo;
 use Fw2\Mentalist\Types\Type;
 
-class Parameter implements HasAttributeContract
+class ObjectProperty implements HasAttributeContract
 {
     use HasAttributes;
     use HasInfo;
@@ -18,18 +20,8 @@ class Parameter implements HasAttributeContract
     ) {
     }
 
-    public function copy(): self
+    public function clone(): static
     {
         return clone $this;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getType(): ?Type
-    {
-        return $this->type;
     }
 }

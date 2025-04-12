@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Ast;
 
 use Fw2\Mentalist\Providers\ParserProvider;
@@ -9,8 +11,9 @@ use ReflectionException;
 
 class AstResolver
 {
-
-    /** @var array<class-string, array<int, Stmt>> */
+    /**
+     * @var array<class-string, array<int, Stmt>>
+     */
     private array $parsed = [];
 
     private ParserProvider $parserProvider;

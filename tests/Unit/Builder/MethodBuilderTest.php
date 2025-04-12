@@ -1,11 +1,11 @@
 <?php
 
 use Fw2\Mentalist\Builder\AttributeBuilder;
-use Fw2\Mentalist\Builder\Context;
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Builder\DocBlockHelper;
 use Fw2\Mentalist\Builder\MethodBuilder;
-use Fw2\Mentalist\Builder\ObjectMethod;
 use Fw2\Mentalist\Builder\TypeBuilder;
+use Fw2\Mentalist\Entity\ObjectMethod;
 use Fw2\Mentalist\Types\IntType;
 use Fw2\Mentalist\Types\StringType;
 use phpDocumentor\Reflection\Types\String_;
@@ -126,7 +126,7 @@ it('builds method with parameter attributes', function () {
 
     $this->attributeBuilder->shouldReceive('build')
         ->with($attrGroups, $this->ctx)
-        ->andReturn([new Fw2\Mentalist\Builder\Attribute('TestAttribute', [])]);
+        ->andReturn([new \Fw2\Mentalist\Entity\Attribute('TestAttribute', [])]);
 
     $method = $this->builder->build($methodNode, $this->ctx);
 

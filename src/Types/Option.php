@@ -1,8 +1,8 @@
 <?php
 
-namespace Fw2\Mentalist\Builder;
+declare(strict_types=1);
 
-use Fw2\Mentalist\Types\Type;
+namespace Fw2\Mentalist\Types;
 
 class Option extends Type
 {

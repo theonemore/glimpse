@@ -1,6 +1,8 @@
 <?php
 
-namespace Fw2\Mentalist\Builder;
+declare(strict_types=1);
+
+namespace Fw2\Mentalist\Entity;
 
 use Fw2\Mentalist\Builder\Aspect\HasAttributeContract;
 use Fw2\Mentalist\Builder\Aspect\HasAttributes;
@@ -13,7 +15,9 @@ class ObjectMethod implements HasAttributeContract, HasDescriptionContract
     use HasAttributes;
     use HasInfo;
 
-    /** @var array<string, Parameter> */
+    /**
+     * @var array<string, Parameter>
+     */
     private array $parameters = [];
     public ?Type $returnType = null;
 

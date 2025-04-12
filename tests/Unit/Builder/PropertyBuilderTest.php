@@ -1,11 +1,11 @@
 <?php
 
 use Fw2\Mentalist\Builder\AttributeBuilder;
-use Fw2\Mentalist\Builder\Context;
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Builder\DocBlockHelper;
-use Fw2\Mentalist\Builder\ObjectProperty;
 use Fw2\Mentalist\Builder\PropertyBuilder;
 use Fw2\Mentalist\Builder\TypeBuilder;
+use Fw2\Mentalist\Entity\ObjectProperty;
 use Fw2\Mentalist\Types\BoolType;
 use Fw2\Mentalist\Types\FloatType;
 use Fw2\Mentalist\Types\IntType;
@@ -114,12 +114,12 @@ it('builds property with attributes', function () {
         ->with(Mockery::on(fn($arg) => $arg instanceof Identifier), $this->ctx)
         ->andReturn(new IntType());
 
-    $attributeResult = ['TestAttribute' => [new \Fw2\Mentalist\Builder\Attribute('TestAttribute', [])]];
+    $attributeResult = [new \Fw2\Mentalist\Entity\Attribute('TestAttribute', [])];
     $this->attributeBuilder->shouldReceive('build')->with([$attrGroup], $this->ctx)->andReturn($attributeResult);
 
     $properties = $this->propertyBuilder->build($propertyNode, $this->ctx);
 
-    expect($properties[0]->attributes)->toBe($attributeResult);
+    expect($properties[0]->getAttributes())->toBe($attributeResult);
 });
 
 it('builds multiple properties in one declaration', function () {

@@ -1,11 +1,13 @@
 <?php
 
-namespace Fw2\Mentalist\Builder;
+declare(strict_types=1);
+
+namespace Fw2\Mentalist\Entity;
 
 use Fw2\Mentalist\Reflector;
 use Fw2\Mentalist\Types\ObjectType;
 
-class ObjectPromise extends ObjectType
+class PromiseObject extends ObjectType
 {
     private Reflector $reflector;
 

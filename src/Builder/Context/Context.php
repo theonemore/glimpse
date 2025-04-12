@@ -1,6 +1,8 @@
 <?php
 
-namespace Fw2\Mentalist\Builder;
+declare(strict_types=1);
+
+namespace Fw2\Mentalist\Builder\Context;
 
 use phpDocumentor\Reflection\Types\Context as PhpDocContext;
 use PhpParser\Node\Name;
@@ -11,12 +13,16 @@ use PhpParser\Node\UseItem;
 
 class Context
 {
-    /** @var array<string, string> */
+    /**
+     * @var array<string, string>
+     */
     private array $uses = [];
     private ?string $ns;
     private ?string $static = null;
 
-    /** @var array<string, string> */
+    /**
+     * @var array<string, string>
+     */
     private array $cache = [];
     private ?PhpDocContext $phpDocContext = null;
 
@@ -104,7 +110,7 @@ class Context
      * @param string $input
      * @return array<int, string>
      */
-    function splitByFirstBackslash(string $input): array
+    private function splitByFirstBackslash(string $input): array
     {
         $pos = strpos($input, '\\');
 

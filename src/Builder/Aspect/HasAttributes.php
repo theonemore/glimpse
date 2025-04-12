@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Builder\Aspect;
 
-use Fw2\Mentalist\Builder\Attribute;
+use Fw2\Mentalist\Entity\Attribute;
 
 trait HasAttributes
 {
-
-    /** @var array<int, Attribute> */
+    /**
+     * @var array<int, Attribute>
+     */
     private array $attributes = [];
 
     public function getAttributes(?string $fqcn = null): array

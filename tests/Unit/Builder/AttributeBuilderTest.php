@@ -1,16 +1,16 @@
 <?php
 
 use Fw2\Mentalist\Builder\AttributeBuilder;
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Builder\ScalarExpressionEvaluator;
-use Fw2\Mentalist\Builder\Context;
-use Fw2\Mentalist\Builder\Attribute as BuilderAttribute;
-use PhpParser\Node\AttributeGroup;
-use PhpParser\Node\Attribute as ParserAttribute;
-use PhpParser\Node\Name;
+use Fw2\Mentalist\Entity\Attribute as BuilderAttribute;
 use PhpParser\Node\Arg;
-use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Attribute as ParserAttribute;
+use PhpParser\Node\AttributeGroup;
 use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Name;
 use PhpParser\Node\Name as NodeName;
+use PhpParser\Node\Scalar\String_;
 
 beforeEach(function () {
     $this->evaluator = mock(ScalarExpressionEvaluator::class);
@@ -34,10 +34,10 @@ it('builds single attribute without arguments', function () {
 
     $result = $this->builder->build([$attrGroup], $this->ctxMock);
 
-    expect($result)->toHaveCount(1);
-    expect($result[0])->toBeInstanceOf(BuilderAttribute::class);
-    expect($result[0]->fqcn)->toBe('Fully\\Qualified\\TestAttribute');
-    expect($result[0]->arguments)->toBe([]);
+    expect($result)->toHaveCount(1)
+        ->and($result[0])->toBeInstanceOf(BuilderAttribute::class)
+        ->and($result[0]->fqcn)->toBe('Fully\\Qualified\\TestAttribute')
+        ->and($result[0]->arguments)->toBe([]);
 });
 
 it('builds multiple attributes with arguments', function () {
@@ -59,13 +59,11 @@ it('builds multiple attributes with arguments', function () {
 
     $result = $this->builder->build([$attrGroup], $this->ctxMock);
 
-    expect($result)->toHaveCount(2);
-
-    expect($result[0]->fqcn)->toBe('Fully\\Qualified\\FirstAttribute');
-    expect($result[0]->arguments)->toBe(['evaluated string']);
-
-    expect($result[1]->fqcn)->toBe('Fully\\Qualified\\SecondAttribute');
-    expect($result[1]->arguments)->toBe([true]);
+    expect($result)->toHaveCount(2)
+        ->and($result[0]->fqcn)->toBe('Fully\\Qualified\\FirstAttribute')
+        ->and($result[0]->arguments)->toBe(['evaluated string'])
+        ->and($result[1]->fqcn)->toBe('Fully\\Qualified\\SecondAttribute')
+        ->and($result[1]->arguments)->toBe([true]);
 });
 
 it('builds attributes from multiple groups', function () {
@@ -80,10 +78,10 @@ it('builds attributes from multiple groups', function () {
 
     $result = $this->builder->build([$group1, $group2], $this->ctxMock);
 
-    expect($result)->toHaveCount(3);
-    expect($result[0]->fqcn)->toBe('Fully\\Qualified\\FirstAttr');
-    expect($result[1]->fqcn)->toBe('Fully\\Qualified\\SecondAttr');
-    expect($result[2]->fqcn)->toBe('Fully\\Qualified\\ThirdAttr');
+    expect($result)->toHaveCount(3)
+        ->and($result[0]->fqcn)->toBe('Fully\\Qualified\\FirstAttr')
+        ->and($result[1]->fqcn)->toBe('Fully\\Qualified\\SecondAttr')
+        ->and($result[2]->fqcn)->toBe('Fully\\Qualified\\ThirdAttr');
 });
 
 it('evaluates all arguments for each attribute', function () {

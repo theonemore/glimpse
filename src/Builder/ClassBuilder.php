@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Builder;
 
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Reflector;
 use Fw2\Mentalist\Types\ObjectType;
 use PhpParser\Node\Identifier;
@@ -26,7 +29,7 @@ class ClassBuilder
      */
     public function build(ClassLike $classLike, Context $ctx): ObjectType
     {
-        $fqcn = $ctx->fqcn($classLike->name);
+        $fqcn = $ctx->fqcn($classLike->name->name);
         $object = new ObjectType($fqcn);
 
         // attributes
@@ -36,7 +39,9 @@ class ClassBuilder
 
         // traits and adaptations
         foreach ($classLike->getTraitUses() as $use) {
-            /** @var array<string, array<string, Identifier>> $adaptations */
+            /**
+ * @var array<string, array<string, Identifier>> $adaptations
+*/
             $adaptations = [];
             foreach ($use->adaptations as $adaptation) {
                 if ($adaptation instanceof Alias) {
@@ -91,9 +96,9 @@ class ClassBuilder
 
 
     /**
-     * @param ObjectType $into
-     * @param ObjectType $from
-     * @param array<string, Identifier> $adaptations
+     * @param  ObjectType                $into
+     * @param  ObjectType                $from
+     * @param  array<string, Identifier> $adaptations
      * @return void
      */
     public function mergeFromTrait(ObjectType $into, ObjectType $from, array $adaptations = []): void
@@ -131,4 +136,3 @@ class ClassBuilder
         }
     }
 }
-

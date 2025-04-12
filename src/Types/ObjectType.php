@@ -1,20 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Types;
 
 use Fw2\Mentalist\Builder\Aspect\HasAttributeContract;
 use Fw2\Mentalist\Builder\Aspect\HasAttributes;
-use Fw2\Mentalist\Builder\ObjectMethod;
-use Fw2\Mentalist\Builder\ObjectProperty;
+use Fw2\Mentalist\Entity\ObjectMethod;
+use Fw2\Mentalist\Entity\ObjectProperty;
 
 class ObjectType extends Type implements HasAttributeContract
 {
     use HasAttributes;
 
-    /** @var array<string, ObjectMethod> */
+    /**
+     * @var array<string, ObjectMethod>
+     */
     private array $methods = [];
 
-    /** @var array<string, ObjectProperty> */
+    /**
+     * @var array<string, ObjectProperty>
+     */
     private array $properties = [];
 
     public function __construct(

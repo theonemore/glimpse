@@ -1,9 +1,8 @@
 <?php
 
-use Fw2\Mentalist\Builder\Context;
-use Fw2\Mentalist\Builder\ObjectPromise;
-use Fw2\Mentalist\Builder\Option;
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Builder\TypeBuilder;
+use Fw2\Mentalist\Entity\PromiseObject;
 use Fw2\Mentalist\Reflector;
 use Fw2\Mentalist\Types\{NullType};
 use Fw2\Mentalist\Types\ArrayType;
@@ -11,6 +10,7 @@ use Fw2\Mentalist\Types\BoolType;
 use Fw2\Mentalist\Types\FloatType;
 use Fw2\Mentalist\Types\IntType;
 use Fw2\Mentalist\Types\ObjectType;
+use Fw2\Mentalist\Types\Option;
 use Fw2\Mentalist\Types\StringType;
 use Fw2\Mentalist\Types\UnionType;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
@@ -25,7 +25,7 @@ beforeEach(function () {
     $reflectorMock = mock(Reflector::class);
     $reflectorMock->shouldReceive('reflect')
         ->with('TestClass', true)
-        ->andReturn(new ObjectPromise('TestClass', $reflectorMock));
+        ->andReturn(new PromiseObject('TestClass', $reflectorMock));
 
     $reflectorMock->shouldReceive('reflect')
         ->with('Namespace\\SomeClass')
@@ -67,12 +67,12 @@ it('builds relative names with context', function () {
 
 it('builds self type with context', function () {
     $result = $this->builder->build(new Identifier('self'), $this->ctx->for('TestClass'));
-    expect($result)->toBeInstanceOf(ObjectPromise::class);
+    expect($result)->toBeInstanceOf(PromiseObject::class);
 });
 
 it('builds static type with context', function () {
     $result = $this->builder->build(new Identifier('static'), $this->ctx->for('TestClass'));
-    expect($result)->toBeInstanceOf(ObjectPromise::class);
+    expect($result)->toBeInstanceOf(PromiseObject::class);
 });
 
 it('builds docblock types', function () {
@@ -125,14 +125,14 @@ it('builds special integer types', function () {
 it('builds special Static_ type', function () {
     $unsupportedType = new Static_();
     $result = $this->builder->build($unsupportedType, $this->ctx->for('TestClass'));
-    expect($result)->toBeInstanceOf(ObjectPromise::class)
+    expect($result)->toBeInstanceOf(PromiseObject::class)
         ->and($result->getFqcn())->toBe('TestClass');
 });
 
 it('builds special Self_ type', function () {
     $unsupportedType = new Self_();
-    /** @var ObjectPromise $result */
+    /** @var PromiseObject $result */
     $result = $this->builder->build($unsupportedType, $this->ctx->for('TestClass'));
-    expect($result)->toBeInstanceOf(ObjectPromise::class)
+    expect($result)->toBeInstanceOf(PromiseObject::class)
         ->and($result->getFqcn())->toBe('TestClass');
 });

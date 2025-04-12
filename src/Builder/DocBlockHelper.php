@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Builder;
 
+use Fw2\Mentalist\Builder\Context\Context;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Description;
-use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Type as DocType;
 
 class DocBlockHelper
@@ -41,7 +44,7 @@ class DocBlockHelper
     }
 
     /**
-     * @param DocBlock|null $doc
+     * @param  DocBlock|null $doc
      * @return array<string, DocType>
      */
     public function getParamTypes(?DocBlock $doc): array

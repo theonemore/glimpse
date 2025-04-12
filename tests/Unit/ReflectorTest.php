@@ -2,8 +2,8 @@
 
 use Fw2\Mentalist\Ast\AstResolver;
 use Fw2\Mentalist\Builder\ClassBuilder;
-use Fw2\Mentalist\Builder\Context;
-use Fw2\Mentalist\Builder\ObjectPromise;
+use Fw2\Mentalist\Builder\Context\Context;
+use Fw2\Mentalist\Entity\PromiseObject;
 use Fw2\Mentalist\Providers\ClassBuilderProvider;
 use Fw2\Mentalist\Reflector;
 use Fw2\Mentalist\Types\ObjectType;
@@ -27,7 +27,7 @@ beforeEach(function () {
 it('returns ObjectPromise when ref is true', function () {
     $promise = $this->reflector->reflect($this->fqcn, true);
 
-    expect($promise)->toBeInstanceOf(ObjectPromise::class)
+    expect($promise)->toBeInstanceOf(PromiseObject::class)
         ->and($promise->getFqcn())->toBe($this->fqcn);
 });
 

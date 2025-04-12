@@ -1,11 +1,11 @@
 <?php
 
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Builder\ScalarExpressionEvaluator;
-use PhpParser\ParserFactory;
+use Mockery as m;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
-use Mockery as m;
-use Fw2\Mentalist\Builder\Context;
+use PhpParser\ParserFactory;
 
 beforeEach(function () {
     $this->parser = (new ParserFactory)->createForHostVersion();

@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Builder;
 
+use Fw2\Mentalist\Builder\Context\Context;
+use Fw2\Mentalist\Entity\Attribute;
 use PhpParser\Node\Arg;
 use PhpParser\Node\AttributeGroup;
 
@@ -9,12 +13,11 @@ class AttributeBuilder
 {
     public function __construct(
         readonly private ScalarExpressionEvaluator $evaluator
-    )
-    {
+    ) {
     }
 
     /**
-     * @param AttributeGroup[] $attrGroups
+     * @param  AttributeGroup[] $attrGroups
      * @return Attribute[]
      */
     public function build(array $attrGroups, Context $ctx): array

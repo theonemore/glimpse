@@ -1,6 +1,6 @@
 <?php
 
-use Fw2\Mentalist\Builder\Context;
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Builder\DocBlockHelper;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -39,15 +39,14 @@ it('parses valid docblock', function () {
         new Context()
     );
 
-    expect($doc)->not->toBeNull();
-
-    expect($helper->getSummary($doc))->toBe('Summary line.');
-    expect($helper->getDescription($doc))->toContain('Description text here.');
+    expect($doc)->not->toBeNull()
+        ->and($helper->getSummary($doc))->toBe('Summary line.')
+        ->and($helper->getDescription($doc))->toContain('Description text here.');
 
     $paramTypes = $helper->getParamTypes($doc);
-    expect($paramTypes)->toHaveKeys(['name', 'age']);
-    expect($paramTypes['name'])->toBeInstanceOf(String_::class);
-    expect($paramTypes['age'])->toBeInstanceOf(Integer::class);
+    expect($paramTypes)->toHaveKeys(['name', 'age'])
+        ->and($paramTypes['name'])->toBeInstanceOf(String_::class)
+        ->and($paramTypes['age'])->toBeInstanceOf(Integer::class);
 
     $returnType = $helper->getReturnType($doc);
     expect($returnType)->toBeInstanceOf(Object_::class);

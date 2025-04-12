@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Providers;
 
 use Fw2\Mentalist\Builder\ScalarExpressionEvaluator;

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Builder;
 
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Reflector;
 use Fw2\Mentalist\Types\AbstractObjectType;
 use Fw2\Mentalist\Types\ArrayType;
@@ -9,6 +12,7 @@ use Fw2\Mentalist\Types\BoolType;
 use Fw2\Mentalist\Types\FloatType;
 use Fw2\Mentalist\Types\IntType;
 use Fw2\Mentalist\Types\NullType;
+use Fw2\Mentalist\Types\Option;
 use Fw2\Mentalist\Types\StringType;
 use Fw2\Mentalist\Types\Type;
 use Fw2\Mentalist\Types\UnionType;
@@ -34,13 +38,13 @@ use phpDocumentor\Reflection\Types\Scalar;
 use phpDocumentor\Reflection\Types\Self_;
 use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Reflection\Types\This as This_;
 use phpDocumentor\Reflection\Types\Void_;
 use PhpParser\Node;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use ReflectionException;
 use RuntimeException;
-use This;
 
 class TypeBuilder
 {
@@ -87,7 +91,10 @@ class TypeBuilder
             $type instanceof Float_ => new FloatType(),
 
             $type instanceof Integer => match (true) {
-                $type instanceof IntegerRange => new IntType(min: (int)$type->getMinValue(), max: (int)$type->getMaxValue()),
+                $type instanceof IntegerRange => new IntType(
+                    min: (int)$type->getMinValue(),
+                    max: (int)$type->getMaxValue()
+                ),
                 $type instanceof NegativeInteger => new IntType(max: 0),
                 $type instanceof PositiveInteger => new IntType(min: 0),
                 default => new IntType(),
@@ -120,7 +127,7 @@ class TypeBuilder
 
             $type instanceof Self_,
                 $type instanceof Static_,
-                $type instanceof This => $this->reflector->reflect($ctx->getStatic(), true),
+                $type instanceof This_ => $this->reflector->reflect($ctx->getStatic(), true),
 
             $type instanceof Parent_ => $this->reflector->reflect(get_parent_class($ctx->getStatic())),
 

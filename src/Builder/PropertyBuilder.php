@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Builder;
 
+use Fw2\Mentalist\Builder\Context\Context;
+use Fw2\Mentalist\Entity\ObjectProperty;
 use PhpParser\Node\Stmt\Property;
-use PhpParser\Node\Stmt\PropertyProperty;
 use ReflectionException;
 
 readonly class PropertyBuilder
@@ -16,14 +19,14 @@ readonly class PropertyBuilder
     }
 
     /**
-     * @param Property $node
-     * @param Context $ctx
+     * @param  Property $node
+     * @param  Context  $ctx
      * @return ObjectProperty[]
      * @throws ReflectionException
      */
     public function build(Property $node, Context $ctx): array
     {
-        $docBlock = $this->docBlockHelper->create($node->getDocComment(), $ctx);
+        $docBlock = $this->docBlockHelper->create($node->getDocComment()?->getText(), $ctx);
 
         $type = $this->tb->build(
             $this->docBlockHelper->getVarType($docBlock) ?? $node->type,
@@ -34,11 +37,16 @@ readonly class PropertyBuilder
         $properties = [];
 
         foreach ($node->props as $prop) {
-            $properties[] = new ObjectProperty(
+            $property = new ObjectProperty(
                 name: $prop->name->name,
                 type: $type,
-                attributes: $attributes,
             );
+
+            foreach ($attributes as $attribute) {
+                $property->addAttribute($attribute);
+            }
+
+            $properties[] = $property;
         }
 
         return $properties;

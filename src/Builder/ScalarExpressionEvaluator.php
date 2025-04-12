@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist\Builder;
 
+use Fw2\Mentalist\Builder\Context\Context;
 use PhpParser\Node;
-use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\ClassConstFetch;
-use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Scalar;
+use PhpParser\Node\Stmt;
 use PhpParser\Parser;
 
 class ScalarExpressionEvaluator
@@ -114,8 +117,8 @@ class ScalarExpressionEvaluator
     }
 
     /**
-     * @param Array_ $array
-     * @param Context $context
+     * @param  Array_  $array
+     * @param  Context $context
      * @return array<int|string, mixed>
      */
     private function evalArray(Array_ $array, Context $context): array

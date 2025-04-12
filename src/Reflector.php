@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Mentalist;
 
 use Fw2\Mentalist\Ast\AstResolver;
 use Fw2\Mentalist\Builder\ClassBuilder;
-use Fw2\Mentalist\Builder\Context;
+use Fw2\Mentalist\Builder\Context\Context;
 use Fw2\Mentalist\Builder\DocBlockHelper;
-use Fw2\Mentalist\Builder\ObjectPromise;
+use Fw2\Mentalist\Entity\PromiseObject;
 use Fw2\Mentalist\Providers\AttributeBuilderProvider;
 use Fw2\Mentalist\Providers\ClassBuilderProvider;
 use Fw2\Mentalist\Providers\EvaluatorProvider;
@@ -25,7 +27,9 @@ class Reflector
 {
     private AstResolver $resolver;
 
-    /** @var array<string, ObjectType> */
+    /**
+     * @var array<string, ObjectType>
+     */
     private array $built = [];
     private ClassBuilder $classes;
 
@@ -44,7 +48,7 @@ class Reflector
     {
         if (!isset($this->built[$fqcn])) {
             if ($ref) {
-                return new ObjectPromise($fqcn, $this);
+                return new PromiseObject($fqcn, $this);
             }
 
             $ast = $this->resolver->resolve($fqcn);
