@@ -7,9 +7,11 @@ use Fw2\Glimpse\Entity\PromiseObject;
 use Fw2\Glimpse\Providers\ClassBuilderProvider;
 use Fw2\Glimpse\Reflector;
 use Fw2\Glimpse\Types\ObjectType;
+use phpDocumentor\Reflection\DocBlockFactory;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\ParserFactory;
 
 beforeEach(function () {
     $this->fqcn = 'App\\Example\\MyClass';
@@ -49,10 +51,8 @@ it('builds and caches ObjectType from class AST', function () {
         ->andReturn($objectType);
 
     $result = $this->reflector->reflect($this->fqcn);
-
     expect($result)->toBe($objectType);
 
-    // второй вызов должен использовать кеш
     $cached = $this->reflector->reflect($this->fqcn);
     expect($cached)->toBe($result);
 });
@@ -84,7 +84,12 @@ it('throws RuntimeException on unknown node type', function () {
         ->andReturn([
             new class {
             }
-        ]); // неподдерживаемый тип
+        ]);
 
     $this->reflector->reflect($this->fqcn);
 })->throws(RuntimeException::class);
+
+it('creates an instance of Reflector', function () {
+    $reflector = Reflector::createInstance(new ParserFactory(), DocBlockFactory::createInstance());
+    expect($reflector)->toBeInstanceOf(Reflector::class);
+});

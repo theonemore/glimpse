@@ -16,7 +16,7 @@ use phpDocumentor\Reflection\Type as DocType;
 class DocBlockHelper
 {
     public function __construct(
-        private DocBlockFactoryInterface $factory
+        readonly private DocBlockFactoryInterface $factory
     ) {
     }
 

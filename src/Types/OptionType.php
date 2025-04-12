@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Fw2\Glimpse\Types;
 
-class Option extends Type
+class OptionType extends Type
 {
     public function __construct(public readonly Type $of)
     {

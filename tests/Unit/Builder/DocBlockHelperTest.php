@@ -4,6 +4,7 @@ use Fw2\Glimpse\Builder\DocBlockHelper;
 use Fw2\Glimpse\Context\Context;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
@@ -72,4 +73,27 @@ it('returns empty results when no tags exist', function () {
         ->and($helper->getReturnType($doc))->toBeNull()
         ->and($helper->getVarType($doc))->toBeNull()
         ->and($helper->getVarDescription($doc))->toBeNull();
+});
+
+
+it('returns null when an exception is thrown during DocBlock creation', function () {
+
+    $factoryMock = $this->createMock(DocBlockFactoryInterface::class);
+
+    $factoryMock->method('create')
+        ->will($this->throwException(new \Exception('DocBlock creation failed')));
+
+    $helper = new DocBlockHelper($factoryMock);
+
+    $doc = $helper->create('invalid doc comment', new Context());
+    expect($doc)->toBeNull();
+});
+
+
+it('returns an empty array when no DocBlock is provided', function () {
+    $helper = createHelper();
+
+    $result = $helper->getParamTypes(null);
+
+    expect($result)->toBe([]);
 });

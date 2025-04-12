@@ -88,6 +88,33 @@ it('builds class with methods', function () {
         ->and($result->getMethods()['testMethod']->getName())->toBe('testMethod');
 });
 
+
+
+it('skips non-public methods', function () {
+    $classNode = new Class_('TestClass');
+
+    $publicMethodNode = new ClassMethod('publicMethod');
+    $publicMethodNode->flags = Modifiers::PUBLIC;
+
+    $nonPublicMethodNode = new ClassMethod('nonPublicMethod');
+    $nonPublicMethodNode->flags = Modifiers::PRIVATE;
+    $classNode->stmts = [$publicMethodNode, $nonPublicMethodNode];
+
+    $this->attributeBuilder->shouldReceive('build')->andReturn([]);
+
+    $publicMethodObject = new Entity\ObjectMethod('publicMethod');
+    $this->methodBuilder->shouldReceive('build')
+        ->with($publicMethodNode, $this->ctx)
+        ->andReturn($publicMethodObject);
+
+    $result = $this->builder->build($classNode, $this->ctx);
+
+    expect($result->getMethods())->toHaveCount(1)
+        ->and($result->getMethods()['publicMethod']->getName())->toBe('publicMethod')
+        ->and($result->getMethods())->not()->toHaveKey('nonPublicMethod');
+});
+
+
 it('builds class with properties', function () {
     $classNode = new Class_('TestClass');
     $propertyNode = new Property(Modifiers::PUBLIC, [new PropertyProperty('testProperty')]);

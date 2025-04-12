@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Fw2\Glimpse\Types;
 
-use Fw2\Glimpse\Builder\Aspect\HasAttributeContract;
-use Fw2\Glimpse\Builder\Aspect\HasAttributes;
+use Fw2\Glimpse\Entity\Aspect\HasAttributeContract;
+use Fw2\Glimpse\Entity\Aspect\HasAttributes;
 use Fw2\Glimpse\Entity\ObjectMethod;
 use Fw2\Glimpse\Entity\ObjectProperty;
 

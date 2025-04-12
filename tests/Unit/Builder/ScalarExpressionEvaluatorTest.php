@@ -136,7 +136,6 @@ it('evaluates ::const fetch', function () {
     );
 
     $this->evaluator->evaluate($expr, $ctx);
-
 })->throws(\LogicException::class, 'Can not evaluate: ::IS_PUBLIC');
 
 
@@ -379,6 +378,41 @@ it('evaluates array dimension fetch', function () {
     expect($this->evaluator->evaluate($expr, $this->context))->toBe('value');
 });
 
+
+it('throws when accessing dimension of non-array', function () {
+    $expr = new Expr\ArrayDimFetch(
+        new Scalar\String_('not array'),
+        new Scalar\LNumber(0)
+    );
+
+    $this->evaluator->evaluate($expr, $this->context);
+})->throws(\LogicException::class, 'Trying array access to non-array');
+
+
+it('throws when accessing array[] without index', function () {
+    $expr = new Expr\ArrayDimFetch(
+        new Expr\Array_([new PhpParser\Node\Expr\ArrayItem(new Scalar\String_('value'))]),
+        null
+    );
+
+    $this->evaluator->evaluate($expr, $this->context);
+})->throws(\LogicException::class, 'Cannot compute $array[] with out definition context');
+
+
+it('throws when accessing missing key in array', function () {
+    $expr = new Expr\ArrayDimFetch(
+        new Expr\Array_([
+            new PhpParser\Node\Expr\ArrayItem(
+                new Scalar\String_('value'),
+                new Scalar\String_('existing')
+            ),
+        ]),
+        new Scalar\String_('missing')
+    );
+
+    $this->evaluator->evaluate($expr, $this->context);
+})->throws(\LogicException::class, "Missing key 'missing'");
+
 it('evaluates unary minus', function () {
     $expr = new Expr\UnaryMinus(new Scalar\LNumber(5));
     expect($this->evaluator->evaluate($expr, $this->context))->toBe(-5);
@@ -450,15 +484,70 @@ it('evaluates match expression', function () {
     expect($this->evaluator->evaluate($expr, $this->context))->toBe('two');
 });
 
+
+it('evaluates match expression with default arm', function () {
+    $expr = new Expr\Match_(
+        cond: new Scalar\LNumber(42),
+        arms: [
+            new MatchArm(
+                conds: null,
+                body: new Scalar\String_('default')
+            )
+        ]
+    );
+
+    expect($this->evaluator->evaluate($expr, $this->context))->toBe('default');
+});
+
+
+it('throws when match expression has no matching arm and no default', function () {
+    $expr = new Expr\Match_(
+        cond: new Scalar\LNumber(1),
+        arms: [
+            new MatchArm(
+                conds: [new Scalar\LNumber(2)],
+                body: new Scalar\String_('no match')
+            )
+        ]
+    );
+
+    $this->evaluator->evaluate($expr, $this->context);
+})->throws(\LogicException::class, 'match: does not contain default value');
+
 it('evaluates isset check', function () {
     $expr = new Expr\Isset_([new Expr\ConstFetch(new PhpParser\Node\Name('someVar'))]);
     expect($this->evaluator->evaluate($expr, $this->context))->toBeFalse();
+});
+
+it('evaluates isset to true when all vars are set', function () {
+    $array = new Expr\Array_([
+        new PhpParser\Node\Expr\ArrayItem(new Scalar\String_('value'), new Scalar\String_('key'))
+    ]);
+
+    $fetch = new Expr\ArrayDimFetch($array, new Scalar\String_('key'));
+    $expr = new Expr\Isset_([$fetch]);
+
+    expect($this->evaluator->evaluate($expr, $this->context))->toBeTrue();
 });
 
 it('evaluates eval expression', function () {
     $expr = new Expr\Eval_(new Scalar\String_('42'));
     expect($this->evaluator->evaluate($expr, $this->context))->toBe(42);
 });
+
+it('throws when eval code does not contain expression', function () {
+    $expr = new Expr\Eval_(
+        new Scalar\String_('class A {}')
+    );
+
+    $this->evaluator->evaluate($expr, $this->context);
+})->throws(\LogicException::class, 'eval() should contain expression');
+
+it('throws if eval() is not a string', function () {
+    $expr = new Expr\Eval_(new Scalar\LNumber(123));
+
+    $this->evaluator->evaluate($expr, $this->context);
+})->throws(\LogicException::class, 'eval() should be string');
 
 it('evaluates nullsafe property fetch', function () {
     $expr = mock(Expr\NullsafePropertyFetch::class);

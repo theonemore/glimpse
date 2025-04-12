@@ -107,8 +107,8 @@ class ScalarExpressionEvaluator
 
             $expr instanceof Expr\PropertyFetch,
                 $expr instanceof Expr\NullsafePropertyFetch => throw new \LogicException(
-                'Property fetch is not supported'
-            ),
+                    'Property fetch is not supported'
+                ),
             $expr instanceof Expr\MethodCall,
                 $expr instanceof Expr\NullsafeMethodCall => throw new \LogicException('Method call is not supported'),
             $expr instanceof Expr\Cast\Object_ => throw new \LogicException('(object) cast is not supported'),
@@ -212,7 +212,6 @@ class ScalarExpressionEvaluator
             throw new \LogicException('eval() should be string');
         }
 
-        // Безопасная эмуляция eval (ТОЛЬКО скалярные выражения)
         $subAst = $this->parser->parse('<?php ' . $code . ';');
         $stmt = $subAst[0] ?? null;
 

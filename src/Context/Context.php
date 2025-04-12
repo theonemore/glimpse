@@ -124,7 +124,6 @@ class Context
 
     public function fqcn(string $alias): string
     {
-        // Проверяем кеш
         if (isset($this->cache[$alias])) {
             return $this->cache[$alias];
         }

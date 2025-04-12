@@ -8,12 +8,12 @@ readonly class Attribute
 {
     /**
      *
-     * @param class-string      $fqcn
+     * @param class-string $fqcn
      * @param array<int, mixed> $arguments
      */
     public function __construct(
         public string $fqcn,
-        public array $arguments
+        public array $arguments = [],
     ) {
     }
 

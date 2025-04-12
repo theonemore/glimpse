@@ -31,7 +31,6 @@ it('returns a PropertyBuilder instance when get() is called', function () {
         ->shouldReceive('create')
         ->andReturn(mock(AttributeBuilder::class));;
 
-    // Проверяем, что get() возвращает объект PropertyBuilder
     $result = $this->propertyBuilderProvider->get($reflector);
     expect($result)->toBeInstanceOf(PropertyBuilder::class);
 });

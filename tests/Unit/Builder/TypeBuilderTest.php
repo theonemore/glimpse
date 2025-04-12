@@ -10,7 +10,7 @@ use Fw2\Glimpse\Types\BoolType;
 use Fw2\Glimpse\Types\FloatType;
 use Fw2\Glimpse\Types\IntType;
 use Fw2\Glimpse\Types\ObjectType;
-use Fw2\Glimpse\Types\Option;
+use Fw2\Glimpse\Types\OptionType;
 use Fw2\Glimpse\Types\StringType;
 use Fw2\Glimpse\Types\UnionType;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
@@ -57,10 +57,10 @@ it('builds primitive types from Identifier', function () {
 
 it('builds nullable types', function () {
     $nullableType = new NullableType(new Identifier('string'));
-    /** @var Option $result */
+    /** @var OptionType $result */
     $result = $this->builder->build($nullableType, $this->ctx);
 
-    expect($result)->toBeInstanceOf(Option::class)
+    expect($result)->toBeInstanceOf(OptionType::class)
         ->and($result->getOf())->toBeInstanceOf(StringType::class);
 });
 
@@ -115,10 +115,10 @@ it('builds union types', function () {
 
 it('builds nullable docblock types', function () {
     $nullableType = new Nullable(new String_());
-    /** @var Option $result */
+    /** @var OptionType $result */
     $result = $this->builder->build($nullableType, $this->ctx);
 
-    expect($result)->toBeInstanceOf(Option::class)
+    expect($result)->toBeInstanceOf(OptionType::class)
         ->and($result->getOf())->toBeInstanceOf(StringType::class);
 });
 

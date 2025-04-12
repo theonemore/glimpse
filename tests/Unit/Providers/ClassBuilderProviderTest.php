@@ -8,13 +8,11 @@ use Fw2\Glimpse\Providers\MethodBuilderProvider;
 use Fw2\Glimpse\Providers\PropertyBuilderProvider;
 
 it('creates ClassBuilder only once and caches it', function () {
-    // Создаем моки всех зависимостей
     $reflector = mock(Reflector::class);
     $attributeBuilderFactory = mock(AttributeBuilderProvider::class);
     $methodBuilderFactory = mock(MethodBuilderProvider::class);
     $propertyBuilderFactory = mock(PropertyBuilderProvider::class);
 
-    // Настраиваем ожидания для фабрик
     $attributeBuilderFactory->shouldReceive('create')
         ->once()
         ->andReturn(mock(Fw2\Glimpse\Builder\AttributeBuilder::class));
@@ -29,17 +27,13 @@ it('creates ClassBuilder only once and caches it', function () {
         ->with($reflector)
         ->andReturn(mock(Fw2\Glimpse\Builder\PropertyBuilder::class));
 
-    // Создаем провайдер
     $provider = new ClassBuilderProvider(
         $attributeBuilderFactory,
         $methodBuilderFactory,
         $propertyBuilderFactory
     );
 
-    // Первый вызов - должен создать экземпляр
     $builder1 = $provider->get($reflector);
-
-    // Второй вызов - должен вернуть тот же экземпляр
     $builder2 = $provider->get($reflector);
 
     expect($builder1)->toBeInstanceOf(ClassBuilder::class)
@@ -52,7 +46,6 @@ it('passes correct dependencies to ClassBuilder', function () {
     $methodBuilder = mock(Fw2\Glimpse\Builder\MethodBuilder::class);
     $propertyBuilder = mock(Fw2\Glimpse\Builder\PropertyBuilder::class);
 
-    // Настраиваем фабрики
     $attributeBuilderFactory = mock(AttributeBuilderProvider::class);
     $methodBuilderFactory = mock(MethodBuilderProvider::class);
     $propertyBuilderFactory = mock(PropertyBuilderProvider::class);
@@ -76,7 +69,6 @@ it('passes correct dependencies to ClassBuilder', function () {
 
     $builder = $provider->get($reflector);
 
-    // Проверяем, что ClassBuilder получил правильные зависимости
     $reflection = new ReflectionClass($builder);
 
     $attributeBuilderProp = $reflection->getProperty('attributes');

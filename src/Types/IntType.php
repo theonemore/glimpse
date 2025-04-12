@@ -9,8 +9,9 @@ class IntType extends ScalarType
     public function __construct(
         readonly public ?int $min = null,
         readonly public ?int $max = null,
+        ?string $description = null,
     ) {
-        parent::__construct();
+        parent::__construct($description);
     }
 
     public function getMin(): ?int

@@ -12,7 +12,7 @@ use Fw2\Glimpse\Types\BoolType;
 use Fw2\Glimpse\Types\FloatType;
 use Fw2\Glimpse\Types\IntType;
 use Fw2\Glimpse\Types\NullType;
-use Fw2\Glimpse\Types\Option;
+use Fw2\Glimpse\Types\OptionType;
 use Fw2\Glimpse\Types\StringType;
 use Fw2\Glimpse\Types\Type;
 use Fw2\Glimpse\Types\UnionType;
@@ -39,12 +39,12 @@ use phpDocumentor\Reflection\Types\Self_;
 use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Types\Void_;
+use phpDocumentor\Reflection\Types\This as This_;
 use PhpParser\Node;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use ReflectionException;
 use RuntimeException;
-use This as This_;
 
 class TypeBuilder
 {
@@ -69,7 +69,7 @@ class TypeBuilder
                 'self', 'static' => $this->reflector->reflect($ctx->getStatic(), true),
                 default => throw new RuntimeException(),
             },
-            $type instanceof Node\NullableType => new Option($this->build($type->type, $ctx)),
+            $type instanceof Node\NullableType => new OptionType($this->build($type->type, $ctx)),
             $type instanceof Name\FullyQualified => $this->reflector->reflect($type->toString()),
             $type instanceof Name => $this->reflector->reflect($ctx->fqcn($type->toString())),
             $type instanceof DocType => $this->buildByDocType($type, $ctx),
@@ -121,7 +121,7 @@ class TypeBuilder
 
             $type instanceof Callable_ => new Callable_(),
 
-            $type instanceof Nullable => new Option($this->build($type->getActualType(), $ctx)),
+            $type instanceof Nullable => new OptionType($this->build($type->getActualType(), $ctx)),
 
             $type instanceof Null_, $type instanceof Void_ => new NullType(),
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fw2\Glimpse\Builder\Aspect;
+namespace Fw2\Glimpse\Entity\Aspect;
 
 use Fw2\Glimpse\Entity\Attribute;
 

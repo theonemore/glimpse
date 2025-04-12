@@ -37,12 +37,10 @@ class ClassBuilder
         $fqcn = $ctx->fqcn($classLike->name->name);
         $object = new ObjectType($fqcn);
 
-        // attributes
         foreach ($this->attributes->build($classLike->attrGroups, $ctx) as $attribute) {
             $object->addAttribute($attribute);
         }
 
-        // traits and adaptations
         foreach ($classLike->getTraitUses() as $use) {
             /**
              * @var array<string, array<string, Identifier>> $adaptations
@@ -62,7 +60,6 @@ class ClassBuilder
             }
         }
 
-        // methods
         foreach ($classLike->getMethods() as $methodNode) {
             if (!$methodNode->isPublic()) {
                 continue;
@@ -71,7 +68,6 @@ class ClassBuilder
             $object->addMethod($this->methods->build($methodNode, $ctx));
         }
 
-        // props
         foreach ($classLike->stmts as $stmt) {
             if ($stmt instanceof Property && $stmt->isPublic() && !$stmt->isStatic()) {
                 foreach ($this->properties->build($stmt, $ctx) as $property) {
@@ -80,14 +76,12 @@ class ClassBuilder
             }
         }
 
-        // extends for class
         if ($classLike instanceof Class_ && $classLike->extends !== null) {
             $parentFqcn = $ctx->fqcn($classLike->extends->name);
             $parent = $this->reflector->reflect($parentFqcn);
             $this->mergeFromParent($object, $parent);
         }
 
-        // extends for interface
         if ($classLike instanceof Interface_) {
             foreach ($classLike->extends as $interface) {
                 $parentFqcn = $ctx->fqcn($interface->name);

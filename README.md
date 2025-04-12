@@ -17,7 +17,7 @@ $ vendor/bin/phpcs
 *autofix if possible*
 
 ```shell
-$ vendor/bin/cbbf
+$ vendor/bin/phpcbf
 ```
 
 ### Running tests

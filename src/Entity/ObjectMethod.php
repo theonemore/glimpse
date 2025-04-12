@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Fw2\Glimpse\Entity;
 
-use Fw2\Glimpse\Builder\Aspect\HasAttributeContract;
-use Fw2\Glimpse\Builder\Aspect\HasAttributes;
-use Fw2\Glimpse\Builder\Aspect\HasDescriptionContract;
-use Fw2\Glimpse\Builder\Aspect\HasInfo;
+use Fw2\Glimpse\Entity\Aspect\HasAttributeContract;
+use Fw2\Glimpse\Entity\Aspect\HasAttributes;
+use Fw2\Glimpse\Entity\Aspect\HasDescriptionContract;
+use Fw2\Glimpse\Entity\Aspect\HasInfo;
 use Fw2\Glimpse\Types\Type;
 
 class ObjectMethod implements HasAttributeContract, HasDescriptionContract
@@ -63,11 +63,6 @@ class ObjectMethod implements HasAttributeContract, HasDescriptionContract
         }
 
         return $method;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 
     public function getName(): string
