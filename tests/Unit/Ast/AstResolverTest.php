@@ -17,7 +17,7 @@ it('throws exception if trying to resolve an internal class', function () {
         ->shouldNotReceive('get');
 
     expect(fn() => $this->astResolver->resolve($internalClass))
-        ->toThrow(\RuntimeException::class, sprintf('Resolving class can not be internal. %s given', $internalClass));
+        ->toThrow(\LogicException::class, 'Source code for class "stdClass" is not found');
 });
 
 it('parses and returns statements for the AstResolver class', function () {

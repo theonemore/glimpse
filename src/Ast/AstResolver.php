@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Fw2\Glimpse\Ast;
 
+use Composer\Autoload\ClassLoader;
 use Fw2\Glimpse\Providers\ParserProvider;
+use LogicException;
 use PhpParser\Node\Stmt;
-use ReflectionClass;
-use ReflectionException;
 
 class AstResolver
 {
@@ -24,23 +24,28 @@ class AstResolver
     }
 
     /**
-     * @throws ReflectionException
      * @return array<int, Stmt>
+     * @throws LogicException
      */
     public function resolve(string $fqcn): array
     {
         if (!isset($this->parsed[$fqcn])) {
-            $ref = (new ReflectionClass($fqcn));
-
-            if ($ref->isInternal()) {
-                throw new \RuntimeException(sprintf('Resolving class can not be internal. %s given', $fqcn));
+            $loaders = ClassLoader::getRegisteredLoaders();
+            foreach ($loaders as $loader) {
+                foreach ($loader->getPrefixesPsr4() as $prefix => $paths) {
+                    if (str_starts_with($fqcn, $prefix)) {
+                        $fqcn = str_replace($prefix, '', $fqcn);
+                        foreach ($paths as $path) {
+                            $path = sprintf('%s%s%s.php', $path, DIRECTORY_SEPARATOR, $fqcn);
+                            if (file_exists($path)) {
+                                $this->parsed[$fqcn] = $this->parserProvider->get()->parse(file_get_contents($path));
+                            }
+                        }
+                    }
+                }
             }
-
-            $file = $ref->getFileName();
-
-            $this->parsed[$fqcn] = $this->parserProvider->get()->parse(file_get_contents($file));
         }
 
-        return $this->parsed[$fqcn];
+        return $this->parsed[$fqcn] ?? throw new LogicException(sprintf('Source code for class "%s" is not found', $fqcn));
     }
 }

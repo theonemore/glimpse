@@ -13,6 +13,10 @@ trait HasAttributes
      */
     private array $attributes = [];
 
+    /**
+     * @param string|null $fqcn
+     * @return array<int, Attribute>
+     */
     public function getAttributes(?string $fqcn = null): array
     {
         if (!$fqcn) {
