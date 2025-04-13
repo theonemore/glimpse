@@ -1,2 +1,9 @@
-vendor
-.idea
+/.phpunit.cache
+/vendor
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+composer.lock
