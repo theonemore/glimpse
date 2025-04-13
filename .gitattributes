@@ -1,0 +1,23 @@
+# Exclude everything by default
+* text=auto eol=lf
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.phpcs.xml.dist export-ignore
+/.phpstan.neon.dist export-ignore
+/.pest.php export-ignore
+/.editorconfig export-ignore
+/.idea export-ignore
+/.vscode export-ignore
+/.github export-ignore
+/composer.json export-ignore
+/composer.lock export-ignore
+
+# Include only necessary files
+/src/ export-ignore
+/LICENSE export-ignore
+/README.md export-ignore
+
+# Keep the source in export
+!/src/
+!/LICENSE
+!/README.md

@@ -1,4 +1,26 @@
-## Contribution
+
+# Glimpse
+
+`fw2/glimpse` is a static reflection library for PHP. It uses `nikic/php-parser` to analyze source code without executing it.
+
+## Installation
+
+Use Composer to install the package:
+
+```bash
+composer require fw2/glimpse
+```
+
+## Example Usage
+
+```php
+use Fw2\Glimpse\Reflector;
+
+$reflector = Reflector::createInstance();
+$reflection = $reflector->reflect('MyClass');
+```
+
+## Development
 
 ### Running phpstan
 
@@ -8,13 +30,13 @@ $ vendor/bin/phpstan analyze src --level=6
 
 ### Running code-style
 
-*show violations*
+*Show violations*
 
 ```shell
 $ vendor/bin/phpcs
 ```
 
-*autofix if possible*
+*Autofix if possible*
 
 ```shell
 $ vendor/bin/phpcbf
@@ -26,8 +48,12 @@ $ vendor/bin/phpcbf
 $ vendor/bin/pest
 ```
 
-*coverage*
+*Coverage*
+
 ```shell
 $ vendor/bin/pest --coverage
 ```
 
+## License
+
+This package is licensed under the MIT license.
