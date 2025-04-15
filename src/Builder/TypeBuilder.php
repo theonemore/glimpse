@@ -26,6 +26,7 @@ use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
 use phpDocumentor\Reflection\Type as DocType;
 use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\AggregatedType;
+use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\Expression;
@@ -70,7 +71,7 @@ class TypeBuilder
                 'float' => new FloatType(),
                 'void', 'null' => new NullType(),
                 'self', 'static' => $this->reflector->reflect($ctx->getStatic(), true),
-                'iterable' => new ArrayType(new MixedType()),
+                'array', 'iterable' => new ArrayType(new MixedType()),
                 'callable' => new CallableType(),
                 'mixed' => new MixedType(),
                 default => throw new RuntimeException('Unsupported type: ' . $type->name),
@@ -95,6 +96,7 @@ class TypeBuilder
                 $type instanceof Object_ => new AbstractObjectType(),
 
             $type instanceof Float_ => new FloatType(),
+            $type instanceof Array_ => new ArrayType($this->buildByDocType($type->getValueType())),
 
             $type instanceof Integer => match (true) {
                 $type instanceof IntegerRange => new IntType(
