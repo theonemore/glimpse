@@ -10,4 +10,9 @@ class AbstractObjectType extends Type
     {
         return false;
     }
+
+    public function getName(): string
+    {
+        return 'object';
+    }
 }

@@ -25,4 +25,10 @@ class OptionType extends Type
     {
         return $this->of->isScalar();
     }
+
+    public function getName(): string
+    {
+        return $this->of->getName();
+    }
 }
+

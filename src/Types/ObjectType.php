@@ -89,4 +89,9 @@ class ObjectType extends Type implements HasAttributeContract
     {
         return false;
     }
+
+    public function getName(): string
+    {
+        return $this->fqcn;
+    }
 }

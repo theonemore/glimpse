@@ -23,4 +23,9 @@ class IntType extends ScalarType
     {
         return $this->max;
     }
+
+    public function getName(): string
+    {
+        return 'int';
+    }
 }

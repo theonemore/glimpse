@@ -21,4 +21,9 @@ class ArrayType extends Type
     {
         return $this->of->isScalar();
     }
+
+    public function getName(): string
+    {
+        return 'array';
+    }
 }

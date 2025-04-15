@@ -16,4 +16,5 @@ abstract class Type
     }
 
     abstract public function isScalar(): bool;
+    abstract public function getName(): string;
 }

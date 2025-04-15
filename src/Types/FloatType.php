@@ -13,4 +13,9 @@ class FloatType extends ScalarType
     ) {
         parent::__construct($description);
     }
+
+    public function getName(): string
+    {
+        return 'float';
+    }
 }

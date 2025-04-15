@@ -16,5 +16,10 @@ it('adds and gets attributes', function () {
 
     expect($object->getAttributes())->toBe([$attr1, $attr2])
         ->and($object->getAttributes('My\Attribute'))->toBe([$attr1])
-        ->and($object->getAttributes('Unknown'))->toBe([]);
+        ->and($object->getAttribute('My\Attribute'))->toBe($attr1)
+        ->and($object->hasAttribute('My\Attribute'))->toBeTrue()
+        ->and($object->getAttributes('Unknown'))->toBe([])
+        ->and($object->getAttribute('Unknown'))->toBeNull()
+        ->and($object->hasAttribute('Unknown'))->toBeFalse()
+    ;
 });

@@ -35,4 +35,9 @@ class UnionType extends Type implements IteratorAggregate
     {
         return array_reduce($this->types, fn(bool $carry, Type $item) => $carry && $item->isScalar(), true);
     }
+
+    public function getName(): string
+    {
+        return implode('|', array_map(fn(Type $type) => $type->getName(), $this->types));
+    }
 }

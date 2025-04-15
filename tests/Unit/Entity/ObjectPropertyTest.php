@@ -10,6 +10,7 @@ it('creates property with name and type', function () {
     $property = new ObjectProperty('propertyName', $type, 'TestClass');
 
     expect($property->getName())->toBe('propertyName')
+        ->and($property->getClassName())->toBe('TestClass')
         ->and($property->type)->toBe($type);
 });
 
