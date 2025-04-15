@@ -30,6 +30,7 @@ use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\Expression;
+use phpDocumentor\Reflection\Types\False_;
 use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\InterfaceString;
@@ -42,6 +43,7 @@ use phpDocumentor\Reflection\Types\Scalar;
 use phpDocumentor\Reflection\Types\Self_;
 use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Reflection\Types\True_;
 use phpDocumentor\Reflection\Types\Void_;
 use phpDocumentor\Reflection\Types\This as This_;
 use PhpParser\Node;
@@ -74,6 +76,7 @@ class TypeBuilder
                 'array', 'iterable' => new ArrayType(new MixedType()),
                 'callable' => new CallableType(),
                 'mixed' => new MixedType(),
+                'bool', 'true', 'false' => new BoolType(),
                 default => throw new RuntimeException('Unsupported type: ' . $type->name),
             },
             $type instanceof Node\NullableType => new OptionType($this->build($type->type, $ctx)),
@@ -125,7 +128,7 @@ class TypeBuilder
                 new BoolType()
             ),
 
-            $type instanceof Boolean => new BoolType(),
+            $type instanceof Boolean, $type instanceof False_, $type instanceof True_ => new BoolType(),
 
             $type instanceof Callable_ => new CallableType(),
 
