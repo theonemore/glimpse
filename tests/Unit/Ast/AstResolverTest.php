@@ -3,7 +3,6 @@
 use Fw2\Glimpse\Ast\AstResolver;
 use Fw2\Glimpse\Providers\ParserProvider;
 use PhpParser\Node\Stmt;
-use PHPUnit\Framework\MockObject\MockObject;
 
 beforeEach(function () {
     $this->parserProvider = mock(ParserProvider::class);

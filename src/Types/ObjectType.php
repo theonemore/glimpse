@@ -84,4 +84,9 @@ class ObjectType extends Type implements HasAttributeContract
     {
         return $this->fqcn;
     }
+
+    public function isScalar(): bool
+    {
+        return false;
+    }
 }

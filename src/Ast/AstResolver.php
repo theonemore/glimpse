@@ -46,6 +46,11 @@ class AstResolver
             }
         }
 
-        return $this->parsed[$fqcn] ?? throw new LogicException(sprintf('Source code for class "%s" is not found', $fqcn));
+        return $this->parsed[$fqcn] ?? throw new LogicException(
+            sprintf(
+                'Source code for class "%s" is not found',
+                $fqcn
+            )
+        );
     }
 }

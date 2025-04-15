@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Fw2\Glimpse\Types;
 
-class NullType extends Type
+class NullType extends ScalarType
 {
 }

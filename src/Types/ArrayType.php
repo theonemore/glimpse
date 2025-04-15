@@ -16,4 +16,9 @@ class ArrayType extends Type
     {
         return $this->of;
     }
+
+    public function isScalar(): bool
+    {
+        return $this->of->isScalar();
+    }
 }

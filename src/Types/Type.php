@@ -14,4 +14,6 @@ abstract class Type
     {
         return $this->description;
     }
+
+    abstract public function isScalar(): bool;
 }
