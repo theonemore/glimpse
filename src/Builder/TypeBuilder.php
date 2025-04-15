@@ -11,6 +11,7 @@ use Fw2\Glimpse\Types\ArrayType;
 use Fw2\Glimpse\Types\BoolType;
 use Fw2\Glimpse\Types\FloatType;
 use Fw2\Glimpse\Types\IntType;
+use Fw2\Glimpse\Types\MixedType;
 use Fw2\Glimpse\Types\NullType;
 use Fw2\Glimpse\Types\OptionType;
 use Fw2\Glimpse\Types\StringType;
@@ -30,6 +31,7 @@ use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\InterfaceString;
+use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
@@ -124,6 +126,7 @@ class TypeBuilder
             $type instanceof Nullable => new OptionType($this->build($type->getActualType(), $ctx)),
 
             $type instanceof Null_, $type instanceof Void_ => new NullType(),
+            $type instanceof Mixed_ => new MixedType(),
 
             $type instanceof Self_,
                 $type instanceof Static_,
