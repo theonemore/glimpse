@@ -93,7 +93,7 @@ class Reflector
         match (true) {
             $stmt instanceof Namespace_ => $this->buildNamespace($stmt),
             $stmt instanceof ClassLike => $this->buildClass($stmt, (new Context())->for($stmt->name->name)),
-            default => throw new \RuntimeException(),
+            default => null,
         };
     }
 

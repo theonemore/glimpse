@@ -77,18 +77,6 @@ it('builds from Namespace_ statement', function () {
     expect($result)->toBe($objectType);
 });
 
-it('throws RuntimeException on unknown node type', function () {
-    $this->mockResolver
-        ->shouldReceive('resolve')
-        ->with($this->fqcn)
-        ->andReturn([
-            new class {
-            }
-        ]);
-
-    $this->reflector->reflect($this->fqcn);
-})->throws(RuntimeException::class);
-
 it('creates an instance of Reflector', function () {
     $reflector = Reflector::createInstance(new ParserFactory(), DocBlockFactory::createInstance());
     expect($reflector)->toBeInstanceOf(Reflector::class);
