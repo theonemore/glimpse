@@ -32,4 +32,26 @@ trait HasAttributes
 
         return $this;
     }
+
+    public function getAttribute(string $fqcn): ?Attribute
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->fqcn === $fqcn) {
+                return $attribute;
+            }
+        }
+
+        return null;
+    }
+
+    public function hasAttribute(string $fqcn): bool
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->fqcn === $fqcn) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
