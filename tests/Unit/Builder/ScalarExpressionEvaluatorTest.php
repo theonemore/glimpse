@@ -77,6 +77,19 @@ it('evaluates class::const fetch', function () {
     expect($this->evaluator->evaluate($expr, $ctx))->toBe(ReflectionMethod::IS_PUBLIC);
 });
 
+it('evaluates class::class fetch', function () {
+    $ctx = mock(Context::class);
+    $ctx->shouldReceive('fqcn')->with(ReflectionMethod::class)->andReturn(ReflectionMethod::class);
+
+    $expr = new Expr\ClassConstFetch(
+        new PhpParser\Node\Name(ReflectionMethod::class),
+        new PhpParser\Node\Identifier('class'),
+    );
+
+    expect($this->evaluator->evaluate($expr, $ctx))->toBe(ReflectionMethod::class);
+});
+
+
 
 it('evaluates self::const fetch', function () {
     $ctx = mock(Context::class);
@@ -576,3 +589,6 @@ it('evaluates object cast', function () {
     $expr = mock(Expr\Cast\Object_::class);
     $this->evaluator->evaluate($expr, $this->context);
 })->throws(\LogicException::class, '(object) cast is not supported');
+
+
+

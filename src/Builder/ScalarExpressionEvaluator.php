@@ -107,8 +107,8 @@ class ScalarExpressionEvaluator
 
             $expr instanceof Expr\PropertyFetch,
                 $expr instanceof Expr\NullsafePropertyFetch => throw new \LogicException(
-                    'Property fetch is not supported'
-                ),
+                'Property fetch is not supported'
+            ),
             $expr instanceof Expr\MethodCall,
                 $expr instanceof Expr\NullsafeMethodCall => throw new \LogicException('Method call is not supported'),
             $expr instanceof Expr\Cast\Object_ => throw new \LogicException('(object) cast is not supported'),
@@ -161,6 +161,10 @@ class ScalarExpressionEvaluator
 
         if (!class_exists($fqcn)) {
             throw new \LogicException("Class not found: $fqcn");
+        }
+
+        if ($constName === 'class') {
+            return $fqcn;
         }
 
         if (!defined("$fqcn::$constName")) {
