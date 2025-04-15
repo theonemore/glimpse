@@ -80,8 +80,8 @@ class TypeBuilder
                 default => throw new RuntimeException('Unsupported type: ' . $type->name),
             },
             $type instanceof Node\NullableType => new OptionType($this->build($type->type, $ctx)),
-            $type instanceof Name\FullyQualified => $this->reflector->reflect($type->toString()),
-            $type instanceof Name => $this->reflector->reflect($ctx->fqcn($type->toString())),
+            $type instanceof Name\FullyQualified => $this->reflector->reflect($type->toString(), true),
+            $type instanceof Name => $this->reflector->reflect($ctx->fqcn($type->toString()), true),
             $type instanceof DocType => $this->buildByDocType($type, $ctx),
             default => null,
         };
@@ -141,7 +141,7 @@ class TypeBuilder
                 $type instanceof Static_,
                 $type instanceof This_ => $this->reflector->reflect($ctx->getStatic(), true),
 
-            $type instanceof Parent_ => $this->reflector->reflect($ctx->getParent()),
+            $type instanceof Parent_ => $this->reflector->reflect($ctx->getParent(), true),
 
             default => throw new RuntimeException(sprintf('Unsupported type: %s', get_class($type))),
         };

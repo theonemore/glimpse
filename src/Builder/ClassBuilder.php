@@ -55,7 +55,7 @@ class ClassBuilder
 
             foreach ($use->traits as $trait) {
                 $tFqcn = $ctx->fqcn($trait->name);
-                $ref = $this->reflector->reflect($tFqcn);
+                $ref = $this->reflector->reflect($tFqcn, true);
                 $this->mergeFromTrait($object, $ref, $adaptations[$tFqcn] ?? []);
             }
         }
@@ -78,14 +78,14 @@ class ClassBuilder
 
         if ($classLike instanceof Class_ && $classLike->extends !== null) {
             $parentFqcn = $ctx->fqcn($classLike->extends->name);
-            $parent = $this->reflector->reflect($parentFqcn);
+            $parent = $this->reflector->reflect($parentFqcn, true);
             $this->mergeFromParent($object, $parent);
         }
 
         if ($classLike instanceof Interface_) {
             foreach ($classLike->extends as $interface) {
                 $parentFqcn = $ctx->fqcn($interface->name);
-                $parent = $this->reflector->reflect($parentFqcn);
+                $parent = $this->reflector->reflect($parentFqcn, true);
                 $this->mergeFromParent($object, $parent);
             }
         }

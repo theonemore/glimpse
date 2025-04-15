@@ -8,6 +8,11 @@ it('can get description', function () {
         {
             return true;
         }
+
+        public function getName(): string
+        {
+            return 'string';
+        }
     };
 
     expect($type->getDescription())->toBe('Type description');
@@ -18,6 +23,11 @@ it('returns null when no description provided', function () {
         public function isScalar(): bool
         {
             return true;
+        }
+
+        public function getName(): string
+        {
+            return 'string';
         }
     };
 

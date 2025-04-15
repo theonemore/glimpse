@@ -143,7 +143,7 @@ it('builds class with parent', function () {
     $parentObject->addProperty(new Entity\ObjectProperty('parentProperty', null, 'TestClass'));
     $parentObject->addMethod(new Entity\ObjectMethod('parentMethod', 'TestClass'));
     $this->reflector->shouldReceive('reflect')
-        ->with('ParentClass')
+        ->with('ParentClass', true)
         ->andReturn($parentObject);
 
     $result = $this->builder->build($classNode, $this->ctx);
@@ -161,7 +161,7 @@ it('builds interface with extends', function () {
     $parentObject = new ObjectType('ParentInterface');
     $parentObject->addMethod(new Entity\ObjectMethod('parentMethod', ''));
     $this->reflector->shouldReceive('reflect')
-        ->with('ParentInterface')
+        ->with('ParentInterface', true)
         ->andReturn($parentObject);
 
     $result = $this->builder->build($interfaceNode, $this->ctx);
@@ -182,7 +182,7 @@ it('builds class with traits', function () {
         ->addProperty(new Entity\ObjectProperty('traitProperty', null, 'TestClass'));
 
     $this->reflector->shouldReceive('reflect')
-        ->with('TestTrait')
+        ->with('TestTrait', true)
         ->andReturn($traitObject);
 
     $result = $this->builder->build($classNode, $this->ctx);
@@ -202,7 +202,7 @@ it('builds class with trait adaptations', function () {
     $traitObject = new ObjectType('TestTrait');
     $traitObject->addMethod(new Entity\ObjectMethod('originalMethod', 'TestClass'));
     $this->reflector->shouldReceive('reflect')
-        ->with('TestTrait')
+        ->with('TestTrait', true)
         ->andReturn($traitObject);
 
     $result = $this->builder->build($classNode, $this->ctx);

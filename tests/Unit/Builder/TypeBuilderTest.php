@@ -37,11 +37,11 @@ beforeEach(function () {
         ->andReturn(new PromiseObject('TestClass', $reflectorMock));
 
     $reflectorMock->shouldReceive('reflect')
-        ->with('Namespace\\SomeClass')
+        ->with('Namespace\\SomeClass', true)
         ->andReturn(new ObjectType('Namespace\\SomeClass'));
 
     $reflectorMock->shouldReceive('reflect')
-        ->with('Fully\\Qualified\\Class')
+        ->with('Fully\\Qualified\\Class', true)
         ->andReturn(new ObjectType('Fully\\Qualified\\Class'));
 
     $this->builder = new TypeBuilder($reflectorMock);
@@ -66,6 +66,7 @@ it('builds nullable types', function () {
 
 it('builds fully qualified names', function () {
     $result = $this->builder->build(new Name\FullyQualified('Fully\\Qualified\\Class'));
+
     expect($result)->toBeInstanceOf(ObjectType::class);
 });
 
@@ -160,12 +161,12 @@ it('calls reflector reflect with parent class when Parent_ type is encountered',
 
     $parentReflection = mock(ObjectType::class);
 
-    $reflector->shouldReceive('reflect')->with($parentClass)->andReturn($parentReflection);
+    $reflector->shouldReceive('reflect')->with($parentClass, true)->andReturn($parentReflection);
 
     $parentType = new Parent_();
 
     $result = $builder->build($parentType, $ctx);
 
     expect($result)->toBe($parentReflection);
-    $reflector->shouldHaveReceived('reflect', [$parentClass]);
+    $reflector->shouldHaveReceived('reflect', [$parentClass, true]);
 });
