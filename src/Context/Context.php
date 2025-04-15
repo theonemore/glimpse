@@ -124,6 +124,14 @@ class Context
 
     public function fqcn(string $alias): string
     {
+        if ($alias == 'self' || $alias == 'static') {
+            return $this->static;
+        }
+
+        if ($alias == 'parent') {
+            return $this->parent;
+        }
+
         if (isset($this->cache[$alias])) {
             return $this->cache[$alias];
         }
