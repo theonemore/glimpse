@@ -9,6 +9,7 @@ use Fw2\Glimpse\Reflector;
 use Fw2\Glimpse\Types\AbstractObjectType;
 use Fw2\Glimpse\Types\ArrayType;
 use Fw2\Glimpse\Types\BoolType;
+use Fw2\Glimpse\Types\CallableType;
 use Fw2\Glimpse\Types\FloatType;
 use Fw2\Glimpse\Types\IntType;
 use Fw2\Glimpse\Types\MixedType;
@@ -69,6 +70,8 @@ class TypeBuilder
                 'float' => new FloatType(),
                 'void', 'null' => new NullType(),
                 'self', 'static' => $this->reflector->reflect($ctx->getStatic(), true),
+                'iterable' => new ArrayType(new MixedType()),
+                'callable' => new CallableType(),
                 'mixed' => new MixedType(),
                 default => throw new RuntimeException('Unsupported type: ' . $type->name),
             },
@@ -122,7 +125,7 @@ class TypeBuilder
 
             $type instanceof Boolean => new BoolType(),
 
-            $type instanceof Callable_ => new Callable_(),
+            $type instanceof Callable_ => new CallableType(),
 
             $type instanceof Nullable => new OptionType($this->build($type->getActualType(), $ctx)),
 
