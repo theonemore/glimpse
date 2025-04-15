@@ -17,6 +17,7 @@ class ObjectProperty implements HasAttributeContract
     public function __construct(
         public string $name,
         public ?Type $type,
+        public string $className,
     ) {
     }
 
@@ -28,5 +29,10 @@ class ObjectProperty implements HasAttributeContract
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getClassName(): string
+    {
+        return $this->className;
     }
 }

@@ -32,7 +32,7 @@ beforeEach(function () {
         $this->reflector
     );
 
-    $this->ctx = new Context();
+    $this->ctx = (new Context())->setStatic('TestClass');
 });
 
 afterEach(function () {
@@ -77,7 +77,7 @@ it('builds class with methods', function () {
 
     $this->attributeBuilder->shouldReceive('build')->andReturn([]);
 
-    $methodObject = new Entity\ObjectMethod('testMethod');
+    $methodObject = new Entity\ObjectMethod('testMethod', 'TestClass');
     $this->methodBuilder->shouldReceive('build')
         ->with($methodNode, $this->ctx)
         ->andReturn($methodObject);
@@ -102,7 +102,7 @@ it('skips non-public methods', function () {
 
     $this->attributeBuilder->shouldReceive('build')->andReturn([]);
 
-    $publicMethodObject = new Entity\ObjectMethod('publicMethod');
+    $publicMethodObject = new Entity\ObjectMethod('publicMethod', 'TestClass');
     $this->methodBuilder->shouldReceive('build')
         ->with($publicMethodNode, $this->ctx)
         ->andReturn($publicMethodObject);
@@ -122,7 +122,7 @@ it('builds class with properties', function () {
 
     $this->attributeBuilder->shouldReceive('build')->andReturn([]);
 
-    $propertyObject = new Entity\ObjectProperty('testProperty', null);
+    $propertyObject = new Entity\ObjectProperty('testProperty', null, 'TestClass');
     $this->propertyBuilder->shouldReceive('build')
         ->with($propertyNode, $this->ctx)
         ->andReturn([$propertyObject]);
@@ -140,8 +140,8 @@ it('builds class with parent', function () {
     $this->attributeBuilder->shouldReceive('build')->andReturn([]);
 
     $parentObject = new ObjectType('ParentClass');
-    $parentObject->addProperty(new Entity\ObjectProperty('parentProperty', null));
-    $parentObject->addMethod(new Entity\ObjectMethod('parentMethod'));
+    $parentObject->addProperty(new Entity\ObjectProperty('parentProperty', null, 'TestClass'));
+    $parentObject->addMethod(new Entity\ObjectMethod('parentMethod', 'TestClass'));
     $this->reflector->shouldReceive('reflect')
         ->with('ParentClass')
         ->andReturn($parentObject);
@@ -159,7 +159,7 @@ it('builds interface with extends', function () {
     $this->attributeBuilder->shouldReceive('build')->andReturn([]);
 
     $parentObject = new ObjectType('ParentInterface');
-    $parentObject->addMethod(new Entity\ObjectMethod('parentMethod'));
+    $parentObject->addMethod(new Entity\ObjectMethod('parentMethod', ''));
     $this->reflector->shouldReceive('reflect')
         ->with('ParentInterface')
         ->andReturn($parentObject);
@@ -178,8 +178,8 @@ it('builds class with traits', function () {
 
     $traitObject = new ObjectType('TestTrait');
     $traitObject
-        ->addMethod(new Entity\ObjectMethod('traitMethod'))
-        ->addProperty(new Entity\ObjectProperty('traitProperty', null));;
+        ->addMethod(new Entity\ObjectMethod('traitMethod', 'TestClass'))
+        ->addProperty(new Entity\ObjectProperty('traitProperty', null, 'TestClass'));
 
     $this->reflector->shouldReceive('reflect')
         ->with('TestTrait')
@@ -200,7 +200,7 @@ it('builds class with trait adaptations', function () {
     $this->attributeBuilder->shouldReceive('build')->andReturn([]);
 
     $traitObject = new ObjectType('TestTrait');
-    $traitObject->addMethod(new Entity\ObjectMethod('originalMethod'));
+    $traitObject->addMethod(new Entity\ObjectMethod('originalMethod', 'TestClass'));
     $this->reflector->shouldReceive('reflect')
         ->with('TestTrait')
         ->andReturn($traitObject);
@@ -215,8 +215,8 @@ it('merges from trait correctly', function () {
     $target = new ObjectType('Target');
     $source = new ObjectType('Source');
 
-    $source->addProperty(new Entity\ObjectProperty('prop', null));
-    $source->addMethod(new Entity\ObjectMethod('method'));
+    $source->addProperty(new Entity\ObjectProperty('prop', null, 'TestClass'));
+    $source->addMethod(new Entity\ObjectMethod('method', 'TestClass'));
     $source->addAttribute(new Entity\Attribute('attr', []));
 
     $this->builder->mergeFromTrait($target, $source);
@@ -230,8 +230,8 @@ it('merges from parent correctly', function () {
     $target = new ObjectType('Child');
     $source = new ObjectType('Parent');
 
-    $source->addProperty(new Entity\ObjectProperty('prop', null));
-    $source->addMethod(new Entity\ObjectMethod('method'));
+    $source->addProperty(new Entity\ObjectProperty('prop', null, 'TestClass'));
+    $source->addMethod(new Entity\ObjectMethod('method', 'TestClass'));
 
     $this->builder->mergeFromParent($target, $source);
 

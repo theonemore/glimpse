@@ -70,14 +70,14 @@ class ObjectType extends Type implements HasAttributeContract
         return $this->properties;
     }
 
-    public function getProperty(string $name): ObjectProperty
+    public function getProperty(string $name): ?ObjectProperty
     {
-        return $this->properties[$name];
+        return $this->properties[$name] ?? null;
     }
 
-    public function getMethod(string $name): ObjectMethod
+    public function getMethod(string $name): ?ObjectMethod
     {
-        return $this->methods[$name];
+        return $this->methods[$name] ?? null;
     }
 
     public function getFqcn(): string

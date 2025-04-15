@@ -11,7 +11,7 @@ use Fw2\Glimpse\Entity\Attribute;
 it('adds a method to resolved object', function () {
     $reflector = mock(Reflector::class);
     $object = new PromiseObject('TestClass', $reflector);
-    $method = new ObjectMethod('testMethod');
+    $method = new ObjectMethod('testMethod', 'TestClass');
 
     $resolvedObject = mock(ObjectType::class);
     $reflector->shouldReceive('reflect')->andReturn($resolvedObject);
@@ -25,7 +25,7 @@ it('adds a method to resolved object', function () {
 it('adds a property to resolved object', function () {
     $reflector = mock(Reflector::class);
     $object = new PromiseObject('TestClass', $reflector);
-    $property = new ObjectProperty('propertyName', new StringType('string'));
+    $property = new ObjectProperty('propertyName', new StringType('string'), 'TestClass');
 
     $resolvedObject = mock(ObjectType::class);
     $reflector->shouldReceive('reflect')->andReturn($resolvedObject);
@@ -41,7 +41,7 @@ it('gets methods from resolved object', function () {
     $object = new PromiseObject('TestClass', $reflector);
 
     $resolvedObject = mock(ObjectType::class);
-    $method = new ObjectMethod('testMethod');
+    $method = new ObjectMethod('testMethod', 'TestClass');
     $resolvedObject->shouldReceive('getMethods')->andReturn([$method]);
     $reflector->shouldReceive('reflect')->andReturn($resolvedObject);
 
@@ -56,7 +56,7 @@ it('gets properties from resolved object', function () {
     $object = new PromiseObject('TestClass', $reflector);
 
     $resolvedObject = mock(ObjectType::class);
-    $property = new ObjectProperty('propertyName', new StringType('string'));
+    $property = new ObjectProperty('propertyName', new StringType('string'), 'TestClass');
     $resolvedObject->shouldReceive('getProperties')->andReturn([$property]);
     $reflector->shouldReceive('reflect')->andReturn($resolvedObject);
 
@@ -71,7 +71,7 @@ it('gets a property from resolved object by name', function () {
     $object = new PromiseObject('TestClass', $reflector);
 
     $resolvedObject = mock(ObjectType::class);
-    $property = new ObjectProperty('propertyName', new StringType('string'));
+    $property = new ObjectProperty('propertyName', new StringType('string'), 'TestClass');
     $resolvedObject->shouldReceive('getProperty')->with('propertyName')->andReturn($property);
     $reflector->shouldReceive('reflect')->andReturn($resolvedObject);
 
@@ -85,7 +85,7 @@ it('gets a method from resolved object by name', function () {
     $object = new PromiseObject('TestClass', $reflector);
 
     $resolvedObject = mock(ObjectType::class);
-    $method = new ObjectMethod('testMethod');
+    $method = new ObjectMethod('testMethod', 'TestClass');
     $resolvedObject->shouldReceive('getMethod')->with('testMethod')->andReturn($method);
     $reflector->shouldReceive('reflect')->andReturn($resolvedObject);
 

@@ -40,6 +40,7 @@ class PropertyBuilder
             $property = new ObjectProperty(
                 name: $prop->name->name,
                 type: $type,
+                className: $ctx->getStatic(),
             );
 
             foreach ($attributes as $attribute) {

@@ -24,7 +24,7 @@ class MethodBuilder
      */
     public function build(ClassMethod $node, Context $ctx): ObjectMethod
     {
-        $method = new ObjectMethod(name: $node->name->name);
+        $method = new ObjectMethod(name: $node->name->name, className: $ctx->getStatic());
 
         $doc = $this->docs->create($node->getDocComment()?->getText(), $ctx);
 

@@ -28,7 +28,7 @@ beforeEach(function () {
         $this->docBlockHelper
     );
 
-    $this->ctx = new Context();
+    $this->ctx = (new Context())->setStatic('TestClass');
 });
 
 it('builds basic method without parameters', function () {

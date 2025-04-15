@@ -6,7 +6,7 @@ use Fw2\Glimpse\Entity\Parameter;
 use Fw2\Glimpse\Types\StringType;
 
 it('adds parameters correctly', function () {
-    $method = new ObjectMethod('testMethod');
+    $method = new ObjectMethod('testMethod', 'TestClass');
     $parameter = new Parameter('param1', new StringType());
 
     $method->addParameter($parameter);
@@ -16,7 +16,7 @@ it('adds parameters correctly', function () {
 });
 
 it('sets and gets return type correctly', function () {
-    $method = new ObjectMethod('testMethod');
+    $method = new ObjectMethod('testMethod', 'TestClass');
 
     $type = new StringType('string');
     $method->setReturnType($type);
@@ -25,7 +25,7 @@ it('sets and gets return type correctly', function () {
 });
 
 it('clones the method with a new name correctly', function () {
-    $method = new ObjectMethod('originalMethod');
+    $method = new ObjectMethod('originalMethod', 'TestClass');
 
     $parameter = new Parameter('param1', new StringType());
     $method->addParameter($parameter);
@@ -41,7 +41,7 @@ it('clones the method with a new name correctly', function () {
 });
 
 it('uses HasAttributes trait for attributes', function () {
-    $method = new ObjectMethod('testMethod');
+    $method = new ObjectMethod('testMethod', 'TestClass');
 
     $attribute = new Attribute('AttributeClass');
     $method->addAttribute($attribute);
@@ -51,7 +51,7 @@ it('uses HasAttributes trait for attributes', function () {
 });
 
 it('uses HasInfo trait for description and summary', function () {
-    $method = new ObjectMethod('testMethod');
+    $method = new ObjectMethod('testMethod', 'TestClass');
 
     $method->setDescription('This is a method description');
     $method->setSummary('This is a summary');

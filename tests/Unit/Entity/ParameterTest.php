@@ -8,7 +8,7 @@ use Fw2\Glimpse\Entity\Attribute;
 
 it('creates property with name and type', function () {
     $type = new StringType('string');
-    $property = new ObjectProperty('propertyName', $type);
+    $property = new ObjectProperty('propertyName', $type, 'TestClass');
 
     expect($property->getName())->toBe('propertyName')
         ->and($property->type)->toBe($type);
@@ -16,7 +16,7 @@ it('creates property with name and type', function () {
 
 it('clones the property correctly', function () {
     $type = new IntType();
-    $property = new ObjectProperty('propertyName', $type);
+    $property = new ObjectProperty('propertyName', $type, 'TestClass');
 
     $clonedProperty = $property->clone();
 
@@ -26,7 +26,7 @@ it('clones the property correctly', function () {
 });
 
 it('uses HasAttributes trait for attributes', function () {
-    $property = new ObjectProperty('propertyName', null);
+    $property = new ObjectProperty('propertyName', null, 'TestClass');
 
     $attribute = new Attribute('AttributeClass');
     $property->addAttribute($attribute);
@@ -36,7 +36,7 @@ it('uses HasAttributes trait for attributes', function () {
 });
 
 it('uses HasInfo trait for description and summary', function () {
-    $property = new ObjectProperty('propertyName', null);
+    $property = new ObjectProperty('propertyName', null, 'TestClass');
 
     $property->setDescription('This is a property description');
     $property->setSummary('This is a summary');

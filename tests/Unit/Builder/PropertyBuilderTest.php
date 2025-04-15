@@ -23,7 +23,7 @@ use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\PropertyProperty;
 
 beforeEach(function () {
-    $this->ctx = new Context();
+    $this->ctx = (new Context())->setStatic('TestClass');
     $this->typeBuilder = mock(TypeBuilder::class);
     $this->typeBuilder->shouldReceive('build')
         ->with(null, $this->ctx)

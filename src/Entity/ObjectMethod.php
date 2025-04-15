@@ -23,6 +23,7 @@ class ObjectMethod implements HasAttributeContract, HasDescriptionContract
 
     public function __construct(
         public readonly string $name,
+        public readonly string $className,
     ) {
     }
 
@@ -53,7 +54,7 @@ class ObjectMethod implements HasAttributeContract, HasDescriptionContract
 
     public function withName(string $name): self
     {
-        $method = (new self($name))
+        $method = (new self($name, $this->getClassName()))
             ->setSummary($this->getSummary())
             ->setDescription($this->getDescription())
             ->setReturnType($this->returnType);
@@ -68,5 +69,10 @@ class ObjectMethod implements HasAttributeContract, HasDescriptionContract
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getClassName(): string
+    {
+        return $this->className;
     }
 }
