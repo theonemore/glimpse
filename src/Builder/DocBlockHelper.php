@@ -44,17 +44,13 @@ class DocBlockHelper
     }
 
     /**
-     * @param  DocBlock|null $doc
+     * @param DocBlock|null $doc
      * @return array<string, DocType>
      */
     public function getParamTypes(?DocBlock $doc): array
     {
-        if (!$doc) {
-            return [];
-        }
-
         $result = [];
-        foreach ($doc->getTagsByName('param') as $tag) {
+        foreach ($doc?->getTagsByName('param') ?? [] as $tag) {
             if ($tag instanceof Param && $tag->getType()) {
                 $result[$tag->getVariableName()] = $tag->getType();
             }
@@ -65,34 +61,57 @@ class DocBlockHelper
 
     public function getReturnType(?DocBlock $doc): ?DocType
     {
+        $type = null;
+
         foreach ($doc?->getTagsByName('return') ?? [] as $tag) {
             if ($tag instanceof Return_) {
-                return $tag->getType();
+                $type = $tag->getType();
             }
         }
 
-        return null;
+        return $type;
     }
 
     public function getVarType(?DocBlock $doc): ?DocType
     {
+        $type = null;
+
         foreach ($doc?->getTagsByName('var') ?? [] as $tag) {
             if ($tag instanceof Var_) {
-                return $tag->getType();
+                $type = $tag->getType();
             }
         }
 
-        return null;
+        return $type;
     }
 
     public function getVarDescription(?DocBlock $doc): ?Description
     {
+        $description = null;
+
         foreach ($doc?->getTagsByName('var') ?? [] as $tag) {
             if ($tag instanceof Var_) {
-                return $tag->getDescription();
+                $description = $tag->getDescription();
             }
         }
 
-        return null;
+        return $description;
+    }
+
+    /**
+     * @param DocBlock|null $doc
+     * @return array<string, Description>
+     */
+    public function getParamDescriptions(?DocBlock $doc): array
+    {
+        $result = [];
+
+        foreach ($doc?->getTagsByName('param') ?? [] as $tag) {
+            if ($tag instanceof Param) {
+                $result[$tag->getVariableName()] = $tag->getDescription();
+            }
+        }
+
+        return $result;
     }
 }

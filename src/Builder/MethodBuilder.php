@@ -38,6 +38,7 @@ class MethodBuilder
             );
 
         $parametersTypes = $this->docs->getParamTypes($doc);
+        $parametersDescriptions = $this->docs->getParamDescriptions($doc);
 
         foreach ($node->getParams() as $param) {
             $doc = $this->docs->create($param->getDocComment()?->getText(), $ctx);
@@ -50,7 +51,9 @@ class MethodBuilder
 
             $parameter = (new Parameter(name: $param->var->name, type: $type))
                 ->setSummary($this->docs->getSummary($doc))
-                ->setDescription($this->docs->getDescription($doc));
+                ->setDescription(
+                    $this->docs->getDescription($doc) ?? $parametersDescriptions[$param->var->name] ?? $param->var->name
+                );
 
             foreach ($this->attributes->build($param->attrGroups, $ctx) as $attribute) {
                 $parameter->addAttribute($attribute);
