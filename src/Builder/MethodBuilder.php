@@ -52,8 +52,8 @@ class MethodBuilder
             $parameter = (new Parameter(name: $param->var->name, type: $type))
                 ->setSummary($this->docs->getSummary($doc))
                 ->setDescription(
-                    $this->docs->getDescription($doc)
-                    ?? ($parametersDescriptions[$param->var->name]?->render())
+                    $this->docs->getVarDescription($doc)?->render()
+                    ?? ($parametersDescriptions[$param->var->name] ?? null)?->render()
                     ?? $param->var->name
                 );
 
