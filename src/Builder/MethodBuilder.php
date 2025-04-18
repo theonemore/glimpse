@@ -52,7 +52,9 @@ class MethodBuilder
             $parameter = (new Parameter(name: $param->var->name, type: $type))
                 ->setSummary($this->docs->getSummary($doc))
                 ->setDescription(
-                    $this->docs->getDescription($doc) ?? $parametersDescriptions[$param->var->name] ?? $param->var->name
+                    $this->docs->getDescription($doc)
+                    ?? ($parametersDescriptions[$param->var->name]?->render())
+                    ?? $param->var->name
                 );
 
             foreach ($this->attributes->build($param->attrGroups, $ctx) as $attribute) {
