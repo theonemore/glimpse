@@ -40,6 +40,10 @@ class MethodBuilder
         $parametersTypes = $this->docs->getParamTypes($doc);
         $parametersDescriptions = $this->docs->getParamDescriptions($doc);
 
+        foreach ($this->attributes->build($node->attrGroups, $ctx) as $attribute) {
+            $method->addAttribute($attribute);
+        }
+
         foreach ($node->getParams() as $param) {
             $doc = $this->docs->create($param->getDocComment()?->getText(), $ctx);
             $docType = $this->docs->getVarType($doc);
