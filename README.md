@@ -14,5 +14,5 @@ $reflector->reflect('Some\User\Class');
 ```
 
 ```shell
-./vendor/bin/phpstan analyze --level=6 --memory-limit 100M
+./vendor/bin/phpstan analyze --level=6 --memory-limit 2G
 ```

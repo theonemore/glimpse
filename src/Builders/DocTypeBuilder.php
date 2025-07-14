@@ -11,6 +11,7 @@ use Fw2\Glimpse\Types\ArrayType;
 use Fw2\Glimpse\Types\BoolType;
 use Fw2\Glimpse\Types\CallableType;
 use Fw2\Glimpse\Types\DictType;
+use Fw2\Glimpse\Types\Entity\ResourceType;
 use Fw2\Glimpse\Types\FloatType;
 use Fw2\Glimpse\Types\IntersectionType;
 use Fw2\Glimpse\Types\IntType;
@@ -43,7 +44,6 @@ use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\InvalidTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ObjectShapeNode;
-use PHPStan\PhpDocParser\Ast\Type\OffsetAccessTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ThisTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
@@ -266,6 +266,9 @@ class DocTypeBuilder
         return (new ObjectType('stdClass'))->setValue((object)$values);
     }
 
+    /**
+     * @throws Exception
+     */
     private function buildConstFetch(ConstFetchNode $expr, Context $context): Type
     {
         $class = $context->resolve($expr->className);
@@ -280,6 +283,9 @@ class DocTypeBuilder
             'string' => (new StringType())->setValue($value),
             'array' => (new ArrayType(new MixedType()))->setValue($value),
             'NULL' => (new NullType())->setValue(null),
+            'resource' => (new ResourceType('resource'))->setValue(true),
+            'resource (closed)' => (new ResourceType('resource'))->setValue(false),
+            'unknown type' => throw new Exception('Unknown type'),
             default => throw new Exception('Unimplemented type ' . gettype($value)),
         };
     }
