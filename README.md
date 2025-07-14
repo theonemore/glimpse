@@ -2,15 +2,11 @@
 require_once './vendor/bin';
 
 $reflector =new \Fw2\Glimpse\Reflector::create();
-$reflector->reflect();
-
-
+$reflector->reflect('Some\User\Class');
 ```
 
-
-
 ```shell
-./vendor/bin/pest
+./vendor/bin/pest --coverage
 ```
 
 ```shell
@@ -18,5 +14,5 @@ $reflector->reflect();
 ```
 
 ```shell
-./vendor/bin/phpstan analyze ./src --level=6
+./vendor/bin/phpstan analyze --level=6 --memory-limit 100M
 ```

@@ -1,5 +1,7 @@
 {
   "name": "fw2/glimpse",
+  "type": "library",
+  "license": "MIT",
   "require": {
     "phpstan/phpdoc-parser": "2.1.0",
     "nikic/php-parser": "^5.5"

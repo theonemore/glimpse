@@ -171,7 +171,7 @@ class Reflector
             : '';
     }
 
-    public static function create(): static
+    public static function create(): self
     {
         $parser = new PhpParser(new Lexer());
         $phpDocParserConfig = new ParserConfig([]);
