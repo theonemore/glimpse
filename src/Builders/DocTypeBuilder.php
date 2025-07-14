@@ -199,6 +199,7 @@ class DocTypeBuilder
             'non-positive-int' => new IntType(null, 0),
             'non-negative-int' => new IntType(0),
             'non-zero-int' => new UnionType(new IntType(null, -1), new IntType(1)),
+            'mixed' => new MixedType(),
             default => $this->buildObjectType($type->name, $context),
         };
     }
