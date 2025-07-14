@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Glimpse;
 
 use Fw2\Glimpse\Types\Type;
@@ -21,7 +23,7 @@ class Context
      */
     private array $implementations = [];
 
-    public function __construct(private ?string $ns = null)
+    public function __construct(private readonly ?string $ns = null)
     {
     }
 

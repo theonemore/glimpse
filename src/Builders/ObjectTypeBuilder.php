@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Glimpse\Builders;
 
 use Fw2\Glimpse\Context;
@@ -64,7 +66,7 @@ class ObjectTypeBuilder
                 continue;
             }
 
-            if (str_starts_with($methodNode->name, '__')) {
+            if (str_starts_with($methodNode->name->name, '__')) {
                 continue;
             }
 

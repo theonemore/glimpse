@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fw2\Glimpse;
 
 use Fw2\Glimpse\PhpDoc\DocBlockHelper;
@@ -41,15 +43,15 @@ class ContextHydrator
         Context $context,
         array $implementations
     ): void {
-        $context->setStatic($context->resolve($classLikeStatement->name));
+        $context->setStatic($context->resolve($classLikeStatement->name->name));
 
         if ($classLikeStatement instanceof Stmt\Class_ && $classLikeStatement->extends) {
             $context->setParent($context->resolve($classLikeStatement->extends->name));
         }
 
-        $context->setParent($context->resolve($classLikeStatement->name));
+        $context->setParent($context->resolve($classLikeStatement->name->name));
 
-        if ($comment = $this->docs->create($classLikeStatement->getDocComment())) {
+        if ($comment = $this->docs->create($classLikeStatement->getDocComment()?->getText())) {
             foreach ($comment->children as $child) {
                 if ($child instanceof PhpDocTagNode) {
                     $value = $child->value;
