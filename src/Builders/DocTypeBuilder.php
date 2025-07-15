@@ -171,14 +171,14 @@ class DocTypeBuilder
         return match ($type->type->name) {
             'object' => $this->buildGenericDictType($type, $context),
             'string' => $this->buildGenericString($type, $context),
-            'class-string' => (new StringType())->setValue(''),
-            'int' => $this->buildGenericInt($type, $context),
+            'class-string' => (new StringType()),
+            'int', 'integer' => $this->buildGenericInt($type, $context),
             'array' => match (count($type->genericTypes)) {
                 1 => new ArrayType($this->build($type->genericTypes[0], $context)),
                 2 => $this->buildGenericDictType($type, $context),
                 default => throw new Exception('Unimplemented type'),
             },
-            'list' => new ArrayType($this->build($type->genericTypes[0], $context)),
+            'list', 'iterable' => new ArrayType($this->build($type->genericTypes[0], $context)),
             default => $this->buildGenericObjectType($type, $context),
         };
     }
@@ -189,14 +189,13 @@ class DocTypeBuilder
     private function buildIdentifier(IdentifierTypeNode $type, Context $context): Type
     {
         return $context->getImplementation($type->name) ?? match ($type->name) {
-            'bool', 'false' => (new BoolType())->setValue(false),
+            'boolean', 'bool', 'false' => (new BoolType())->setValue(false),
             'true' => (new BoolType())->setValue(true),
-            'null' => (new NullType())->setValue(null),
+            'null', 'void' => (new NullType())->setValue(null),
             'array' => (new ArrayType(new MixedType()))->setValue([]),
             'int' => (new IntType())->setValue(0),
             'float' => (new FloatType())->setValue(0),
             'string', 'class-string' => (new StringType())->setValue(''),
-            'void' => new NullType(),
             'self', 'static' => $this->reflector->getReflection($context->getStatic()),
             'callable' => new CallableType(),
             'object' => new DictType(),
@@ -206,7 +205,25 @@ class DocTypeBuilder
             'non-negative-int' => new IntType(0),
             'non-zero-int' => new UnionType(new IntType(null, -1), new IntType(1)),
             'mixed' => new MixedType(),
-            'resource' => new ResourceType(),
+            'resource' => (new ResourceType())->setValue(true),
+            'open-resource' => new ResourceType(),
+            'closed-resource' => (new ResourceType())->setValue(false),
+            'list', 'iterable' => new ArrayType(new MixedType()),
+            'scalar' => new UnionType(
+                new StringType(),
+                new IntType(),
+                new FloatType(),
+                new BoolType(),
+                new NullType(),
+            ),
+            'number' => new UnionType(
+                new FloatType(),
+                new IntType(),
+            ),
+            'array-key' => new UnionType(
+                new IntType(),
+                new StringType(),
+            ),
             default => $this->buildObjectType($type->name, $context),
         };
     }
