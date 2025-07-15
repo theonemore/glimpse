@@ -200,6 +200,7 @@ class DocTypeBuilder
             'non-negative-int' => new IntType(0),
             'non-zero-int' => new UnionType(new IntType(null, -1), new IntType(1)),
             'mixed' => new MixedType(),
+            'resource' => new ResourceType(),
             default => $this->buildObjectType($type->name, $context),
         };
     }
@@ -283,8 +284,8 @@ class DocTypeBuilder
             'string' => (new StringType())->setValue($value),
             'array' => (new ArrayType(new MixedType()))->setValue($value),
             'NULL' => (new NullType())->setValue(null),
-            'resource' => (new ResourceType('resource'))->setValue(true),
-            'resource (closed)' => (new ResourceType('resource'))->setValue(false),
+            'resource' => (new ResourceType())->setValue(true),
+            'resource (closed)' => (new ResourceType())->setValue(false),
             'unknown type' => throw new Exception('Unknown type'),
             default => throw new Exception('Unimplemented type ' . gettype($value)),
         };
