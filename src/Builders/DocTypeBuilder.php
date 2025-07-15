@@ -162,6 +162,10 @@ class DocTypeBuilder
         return new ArrayType($this->build($type->type, $context));
     }
 
+    /**
+     * @throws ReflectionException
+     * @throws Exception
+     */
     private function buildGenericType(GenericTypeNode $type, Context $context): Type
     {
         return match (true) {
@@ -173,6 +177,7 @@ class DocTypeBuilder
                 2 => $this->buildGenericDictType($type, $context),
                 default => throw new Exception('Unimplemented type'),
             },
+            $type->type->name === 'list' => new ArrayType($this->build($type->genericTypes[0], $context)),
             default => $this->buildGenericObjectType($type, $context),
         };
     }
