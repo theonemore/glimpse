@@ -168,16 +168,17 @@ class DocTypeBuilder
      */
     private function buildGenericType(GenericTypeNode $type, Context $context): Type
     {
-        return match (true) {
-            $type->type->name == 'object' => $this->buildGenericDictType($type, $context),
-            $type->type->name == 'string' => $this->buildGenericString($type, $context),
-            $type->type->name == 'int' => $this->buildGenericInt($type, $context),
-            $type->type->name == 'array' => match (count($type->genericTypes)) {
+        return match ($type->type->name) {
+            'object' => $this->buildGenericDictType($type, $context),
+            'string' => $this->buildGenericString($type, $context),
+            'class-string' => (new StringType())->setValue(''),
+            'int' => $this->buildGenericInt($type, $context),
+            'array' => match (count($type->genericTypes)) {
                 1 => new ArrayType($this->build($type->genericTypes[0], $context)),
                 2 => $this->buildGenericDictType($type, $context),
                 default => throw new Exception('Unimplemented type'),
             },
-            $type->type->name === 'list' => new ArrayType($this->build($type->genericTypes[0], $context)),
+            'list' => new ArrayType($this->build($type->genericTypes[0], $context)),
             default => $this->buildGenericObjectType($type, $context),
         };
     }
@@ -194,7 +195,7 @@ class DocTypeBuilder
             'array' => (new ArrayType(new MixedType()))->setValue([]),
             'int' => (new IntType())->setValue(0),
             'float' => (new FloatType())->setValue(0),
-            'string' => (new StringType())->setValue(''),
+            'string', 'class-string' => (new StringType())->setValue(''),
             'void' => new NullType(),
             'self', 'static' => $this->reflector->getReflection($context->getStatic()),
             'callable' => new CallableType(),
